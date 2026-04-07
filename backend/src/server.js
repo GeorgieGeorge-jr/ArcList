@@ -1,14 +1,12 @@
-const dotenv = require("dotenv");
-dotenv.config();
-
 const app = require("./app");
-const { testDatabaseConnection } = require("./config/db");
+const { testConnection } = require("./config/db");
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5050;
 
 async function startServer() {
   try {
-    await testDatabaseConnection();
+    await testConnection();
+    console.log("✅ MySQL connected successfully");
 
     app.listen(PORT, () => {
       console.log(`🚀 ArcList server running on http://localhost:${PORT}`);

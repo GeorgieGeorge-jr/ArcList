@@ -4,6 +4,7 @@ const helmet = require("helmet");
 const morgan = require("morgan");
 const cookieParser = require("cookie-parser");
 
+
 const authRoutes = require("./routes/authRoutes");
 const taskRoutes = require("./routes/taskRoutes");
 const plannerRoutes = require("./routes/plannerRoutes");
@@ -19,7 +20,7 @@ app.disable("etag");
 
 app.use(
   cors({
-    origin: ["http://127.0.0.1:5500", "http://localhost:5500"],
+    origin: ["https://arclistbyarchives.netlify.app","http://127.0.0.1:5500", "http://localhost:5500"],
     credentials: true,
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
