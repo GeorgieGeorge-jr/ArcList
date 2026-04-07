@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en" class="theme-summer-raspberry">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Settings | ArcList</title>
+  <link rel="stylesheet" href="../css/main.css" />
+</head>
+<body class="theme-summer-raspberry">
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="sidebar-panel">
+        <a href="./dashboard.html" class="sidebar-brand">
+          <span class="brand-name">ArcList</span>
+          <span class="powered-by">powered by archives</span>
+        </a>
+
+        <nav class="sidebar-nav">
+          <a href="./dashboard.html" class="nav-item">Dashboard</a>
+          <a href="./planner.html" class="nav-item">Planner</a>
+          <a href="./calendar.html" class="nav-item">Calendar</a>
+          <a href="./tasks.html" class="nav-item">Tasks</a>
+          <a href="./insights.html" class="nav-item">Insights</a>
+          <a href="./friends.html" class="nav-item">Friends</a>
+          <a href="./messages.html" class="nav-item">Messages</a>
+          <a href="./notifications.html" class="nav-item">Notifications</a>
+          <a href="./settings.html" class="nav-item active">Settings</a>
+        </nav>
+
+        <div class="sidebar-foot">
+          <div class="sidebar-user">
+            <strong id="sidebarUserName">User</strong>
+            <span id="sidebarUserMeta">@username</span>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <main class="main-area">
+      <header class="topbar">
+        <div class="topbar-title">
+          <h1 id="settingsPageTitle">Settings</h1>
+          <p>Personalize ArcList until it feels like yours, not rented software.</p>
+        </div>
+
+        <div class="topbar-actions">
+          <button class="btn btn-ghost" data-logout>Logout</button>
+        </div>
+      </header>
+
+      <form id="settingsForm" class="settings-stack">
+        <section class="settings-grid">
+          <article class="panel glass-card">
+            <div class="panel-header">
+              <div>
+                <h2>Profile</h2>
+                <p>Your identity inside ArcList.</p>
+              </div>
+            </div>
+
+            <div class="auth-form" style="margin-top: 0;">
+              <div class="form-group">
+                <label class="form-label" for="displayName">Display name</label>
+                <input id="displayName" class="form-input" type="text" required />
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="username">Username</label>
+                <input id="username" class="form-input" type="text" disabled />
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="email">Email</label>
+                <input id="email" class="form-input" type="email" disabled />
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="avatarUrl">Avatar URL (placeholder)</label>
+                <input
+                  id="avatarUrl"
+                  class="form-input"
+                  type="url"
+                  placeholder="https://example.com/avatar.jpg"
+                />
+              </div>
+
+              <div class="avatar-preview-card">
+                <div class="avatar-preview-circle" id="avatarPreviewCircle">
+                  <img id="avatarPreviewImage" alt="Avatar preview" style="display:none;" />
+                  <span id="avatarPreviewFallback">A</span>
+                </div>
+                <div>
+                  <h4 style="margin-bottom: 0.35rem;">Avatar preview</h4>
+                  <p class="section-copy">Image upload comes later. For now, a linked image works as a placeholder.</p>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="panel glass-card">
+            <div class="panel-header">
+              <div>
+                <h2>Personalization</h2>
+                <p>How ArcList should behave by default.</p>
+              </div>
+            </div>
+
+            <div class="auth-form" style="margin-top: 0;">
+              <div class="form-group">
+                <label class="form-label" for="theme">Theme</label>
+                <select id="theme" class="form-input" required>
+                  <option value="summer-raspberry">Summer Raspberry</option>
+                  <option value="midnight-indigo">Midnight Indigo</option>
+                  <option value="emerald-bloom">Emerald Bloom</option>
+                  <option value="obsidian-sky">Obsidian Sky</option>
+                  <option value="amber-smoke">Amber Smoke</option>
+                  <option value="royal-plum">Royal Plum</option>
+                  <option value="ocean-noir">Ocean Noir</option>
+                  <option value="forest-velvet">Forest Velvet</option>
+                </select>
+              </div>
+
+              <div class="settings-inline-grid">
+                <div class="form-group">
+                  <label class="form-label" for="defaultPlanningMode">Default planning mode</label>
+                  <select id="defaultPlanningMode" class="form-input" required>
+                    <option value="todo">To-do</option>
+                    <option value="timetable">Timetable</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="defaultTaskDuration">Default task duration (mins)</label>
+                  <input
+                    id="defaultTaskDuration"
+                    class="form-input"
+                    type="number"
+                    min="1"
+                    required
+                  />
+                </div>
+              </div>
+
+              <div class="theme-preview-card">
+                <span class="badge">Current theme</span>
+                <h3 id="themePreviewName" style="margin-top: 1rem;">Summer Raspberry</h3>
+                <p class="section-copy" style="margin-top: 0.6rem;" id="themePreviewDescription">
+                  Moody, rich, focused, premium.
+                </p>
+              </div>
+            </div>
+          </article>
+        </section>
+
+        <section class="settings-grid">
+          <article class="panel glass-card">
+            <div class="panel-header">
+              <div>
+                <h2>Notifications</h2>
+                <p>Choose what ArcList should bug you about, respectfully.</p>
+              </div>
+            </div>
+
+            <div class="settings-toggle-list">
+              <label class="settings-toggle-item">
+                <div>
+                  <strong>Enable notifications</strong>
+                  <p>Master switch for reminders and alerts.</p>
+                </div>
+                <input id="notificationsEnabled" type="checkbox" />
+              </label>
+
+              <label class="settings-toggle-item">
+                <div>
+                  <strong>Task reminders</strong>
+                  <p>Get nudges before tasks are due.</p>
+                </div>
+                <input id="reminderNotifications" type="checkbox" />
+              </label>
+
+              <label class="settings-toggle-item">
+                <div>
+                  <strong>Daily review reminders</strong>
+                  <p>Get prompted to close out the day properly.</p>
+                </div>
+                <input id="dailyReviewNotifications" type="checkbox" />
+              </label>
+
+              <label class="settings-toggle-item">
+                <div>
+                  <strong>Collaboration alerts</strong>
+                  <p>Get notified when shared work needs attention.</p>
+                </div>
+                <input id="collaborationNotifications" type="checkbox" />
+              </label>
+            </div>
+          </article>
+
+          <article class="panel glass-card">
+            <div class="panel-header">
+              <div>
+                <h2>Privacy & collaboration</h2>
+                <p>Control what people can see and how they can reach you.</p>
+              </div>
+            </div>
+
+            <div class="auth-form" style="margin-top: 0;">
+              <div class="form-group">
+                <label class="form-label" for="profileVisibility">Profile visibility</label>
+                <select id="profileVisibility" class="form-input">
+                  <option value="private">Private</option>
+                  <option value="friends">Friends only</option>
+                  <option value="public">Public</option>
+                </select>
+              </div>
+
+              <div class="settings-toggle-list">
+                <label class="settings-toggle-item">
+                  <div>
+                    <strong>Allow friend requests</strong>
+                    <p>Let other users send you requests.</p>
+                  </div>
+                  <input id="allowFriendRequests" type="checkbox" />
+                </label>
+
+                <label class="settings-toggle-item">
+                  <div>
+                    <strong>Allow collaboration</strong>
+                    <p>Let trusted people invite you into shared tasks.</p>
+                  </div>
+                  <input id="allowCollaboration" type="checkbox" />
+                </label>
+              </div>
+            </div>
+          </article>
+        </section>
+
+        <div class="settings-save-bar glass-card">
+          <div>
+            <h3 style="margin-bottom: 0.35rem;">Save changes</h3>
+            <p class="section-copy">Your settings sync back to your account and should follow you across sessions.</p>
+          </div>
+          <button type="submit" class="btn btn-primary">Save Settings</button>
+        </div>
+      </form>
+    </main>
+  </div>
+
+  <nav class="mobile-tabbar">
+    <a href="./dashboard.html">Home</a>
+    <a href="./planner.html">Planner</a>
+    <a href="./tasks.html">Tasks</a>
+    <a href="./insights.html">Insights</a>
+    <a href="./settings.html" class="active">Settings</a>
+    <a href="./notifications.html" class="nav-item nav-item-with-badge">
+      <span>Notifications</span>
+      <span class="notification-badge" data-notification-badge></span>
+    </a>
+  </nav>
+
+  <script type="module" src="../js/pages/settings.js">
+    import { renderNotificationBadges } from "../js/components/notificationBadge.js";
+
+    renderNotificationBadges();
+  </script>
+</body>
+</html>

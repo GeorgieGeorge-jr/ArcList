@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en" class="theme-summer-raspberry">
+<head>
+  <meta charset="UTF-8" >
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" >
+  <title>Planner | ArcList</title>
+  <link rel="stylesheet" href="../css/main.css" >
+  <script type="module">
+  import { getUser } from "../js/utils/session.js";
+  import { applyTheme } from "../js/utils/theme.js";
+
+  const user = getUser();
+  applyTheme(user?.theme || "summer-raspberry");
+</script>
+</head>
+<body class="theme-summer-raspberry">
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="sidebar-panel">
+        <a href="./dashboard.html" class="sidebar-brand">
+          <span class="brand-name">ArcList</span>
+          <span class="powered-by">powered by archives</span>
+        </a>
+
+        <nav class="sidebar-nav">
+          <a href="./dashboard.html" class="nav-item">Dashboard</a>
+          <a href="./planner.html" class="nav-item active">Planner</a>
+          <a href="./calendar.html" class="nav-item">Calendar</a>
+          <a href="./tasks.html" class="nav-item">Tasks</a>
+          <a href="./insights.html" class="nav-item">Insights</a>
+          <a href="./friends.html" class="nav-item">Friends</a>
+          <a href="./messages.html" class="nav-item">Messages</a>
+          <a href="./notifications.html" class="nav-item nav-item-with-badge">
+            <span>Notifications</span>
+            <span class="notification-badge" data-notification-badge></span>
+          </a>
+          <a href="./settings.html" class="nav-item">Settings</a>
+        </nav>
+
+        <div class="sidebar-foot">
+          <div class="sidebar-user">
+            <strong id="sidebarUserName">User</strong>
+            <span id="sidebarUserMeta">@username</span>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <main class="main-area">
+      <header class="topbar">
+        <div class="topbar-title">
+          <h1 id="plannerTitle">Daily planner</h1>
+          <p>Shape the day before the day starts shaping you.</p>
+        </div>
+
+        <div class="topbar-actions">
+          <button class="btn btn-secondary" id="savePlannerBtn">Save Plan</button>
+          <button class="btn btn-primary" id="lockPlannerBtn">Lock In</button>
+          <button class="btn btn-ghost" data-logout>Logout</button>
+        </div>
+      </header>
+
+      <section class="planner-top-grid">
+        <article class="panel glass-card">
+          <div class="planner-settings-grid">
+            <div class="form-group">
+              <label class="form-label" for="plannerDate">Plan date</label>
+              <input type="date" id="plannerDate" class="form-input" />
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="plannerMode">Planning mode</label>
+              <select id="plannerMode" class="form-input">
+                <option value="todo">To-do mode</option>
+                <option value="timetable">Timetable mode</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group" style="margin-top: 1rem;">
+            <label class="form-label" for="plannerNotes">Plan notes</label>
+            <textarea
+              id="plannerNotes"
+              class="form-input"
+              rows="4"
+              placeholder="Write notes, reflections, priorities, or reminders for the day..."
+            ></textarea>
+          </div>
+
+          <div class="task-meta-row" style="margin-top: 1rem;">
+            <span class="meta-pill" id="plannerLockStatus">Unlocked</span>
+            <span class="meta-pill" id="plannerTaskCount">0 tasks in plan</span>
+          </div>
+        </article>
+
+        <article class="panel glass-card">
+          <div class="panel-header">
+            <div>
+              <h3>Add existing task</h3>
+              <p>Pick from your task library and place it into today’s plan.</p>
+            </div>
+          </div>
+
+          <form id="addTaskToPlanForm" class="auth-form" style="margin-top: 0;">
+            <div class="form-group">
+              <label class="form-label" for="taskSelect">Choose task</label>
+              <select id="taskSelect" class="form-input" required>
+                <option value="">Select a task</option>
+              </select>
+            </div>
+
+            <div class="planner-settings-grid">
+              <div class="form-group">
+                <label class="form-label" for="plannedStart">Planned start</label>
+                <input type="datetime-local" id="plannedStart" class="form-input" />
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="plannedEnd">Planned end</label>
+                <input type="datetime-local" id="plannedEnd" class="form-input" />
+              </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Add to Plan</button>
+          </form>
+        </article>
+      </section>
+
+      <section class="panel glass-card" style="margin-top: 1rem;">
+        <div class="panel-header">
+          <div>
+            <h2>Planned tasks</h2>
+            <p>Your selected day structure lives here.</p>
+          </div>
+        </div>
+
+        <div id="plannerEmptyState" class="empty-state" style="display: none;">
+          <span class="badge">No tasks planned</span>
+          <h3 style="margin-top: 1rem;">This day is still open.</h3>
+          <p class="section-copy" style="margin-top: 0.6rem;">
+            Add tasks from your task library and shape a clear day plan.
+          </p>
+        </div>
+
+        <div id="plannerTasksList" class="planner-tasks-list"></div>
+      </section>
+    </main>
+  </div>
+
+  <nav class="mobile-tabbar">
+    <a href="./dashboard.html">Home</a>
+    <a href="./planner.html" class="active">Planner</a>
+    <a href="./tasks.html">Tasks</a>
+    <a href="./insights.html">Insights</a>
+    <a href="./settings.html">Settings</a>
+  </nav>
+
+  <div class="modal-backdrop" id="lockModalBackdrop" style="display: none;">
+    <div class="modal-card glass-card">
+      <div class="panel-header">
+        <div>
+          <h3>Lock in this plan?</h3>
+          <p>This action is intentional. Existing tasks in the locked plan cannot be removed afterward.</p>
+        </div>
+      </div>
+
+      <div class="suggestion-list">
+        <div class="suggestion-item">
+          <h4>What happens after lock-in</h4>
+          <p>You can still add new tasks later, but tasks already in this plan cannot be removed anymore.</p>
+        </div>
+      </div>
+
+      <div style="margin-top: 1.2rem; display: flex; gap: 0.8rem; flex-wrap: wrap;">
+        <button class="btn btn-secondary" id="cancelLockBtn">Cancel</button>
+        <button class="btn btn-primary" id="confirmLockBtn">Confirm Lock-In</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="../js/pages/planner.js"></script>
+</body>
+</html>

@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en" class="theme-summer-raspberry">
+<head>
+<meta charset="UTF-8" >
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Tasks | ArcList</title>
+<link rel="stylesheet" href="../css/main.css" >
+<script type="module">
+  import { getUser } from "../js/utils/session.js";
+  import { applyTheme } from "../js/utils/theme.js";
+
+  const user = getUser();
+  applyTheme(user?.theme || "summer-raspberry");
+</script>
+</head>
+<body class="theme-summer-raspberry">
+<div class="app-shell">
+    <aside class="sidebar">
+    <div class="sidebar-panel">
+        <a href="./dashboard.html" class="sidebar-brand">
+        <span class="brand-name">ArcList</span>
+        <span class="powered-by">powered by archives</span>
+        </a>
+
+        <nav class="sidebar-nav">
+        <a href="./dashboard.html" class="nav-item">Dashboard</a>
+        <a href="./planner.html" class="nav-item">Planner</a>
+        <a href="./calendar.html" class="nav-item">Calendar</a>
+        <a href="./tasks.html" class="nav-item active">Tasks</a>
+        <a href="./insights.html" class="nav-item">Insights</a>
+        <a href="./friends.html" class="nav-item">Friends</a>
+        <a href="./messages.html" class="nav-item">Messages</a>
+        <a href="./notifications.html" class="nav-item nav-item-with-badge">
+          <span>Notifications</span>
+          <span class="notification-badge" data-notification-badge></span>
+        </a>
+        <a href="./settings.html" class="nav-item">Settings</a>
+        </nav>
+
+        <div class="sidebar-foot">
+        <div class="sidebar-user">
+            <strong id="sidebarUserName">User</strong>
+            <span id="sidebarUserMeta">@username</span>
+        </div>
+        </div>
+    </div>
+    </aside>
+
+    <main class="main-area">
+    <header class="topbar">
+        <div class="topbar-title">
+        <h1 id="tasksPageTitle">Your tasks</h1>
+        <p>Organize what matters, without turning your screen into a crowded market square.</p>
+        </div>
+
+        <div class="topbar-actions">
+          <button class="btn btn-primary" id="openTaskModalBtn">Add Task</button>
+          <button class="btn btn-ghost" data-logout>Logout</button>
+        </div>
+      </header>
+
+      <section class="panel glass-card task-controls-panel">
+        <div class="task-controls">
+          <div class="task-search-group">
+            <input
+              type="text"
+              id="taskSearchInput"
+              class="form-input"
+              placeholder="Search tasks..."
+            />
+          </div>
+
+          <div class="task-filter-group">
+            <select id="priorityFilter" class="form-input">
+              <option value="">All priorities</option>
+              <option value="urgent">Urgent</option>
+              <option value="high">High</option>
+              <option value="medium">Medium</option>
+              <option value="low">Low</option>
+            </select>
+
+            <select id="statusFilter" class="form-input">
+              <option value="">All statuses</option>
+              <option value="pending">Pending</option>
+              <option value="in_progress">In progress</option>
+              <option value="completed">Completed</option>
+              <option value="archived">Archived</option>
+            </select>
+          </div>
+        </div>
+      </section>
+
+      <section id="tasksEmptyState" class="panel glass-card empty-state" style="display: none;">
+        <span class="badge">No tasks yet</span>
+        <h2 style="margin-top: 1rem;">Your list is still clean.</h2>
+        <p class="section-copy" style="margin-top: 0.6rem;">
+          Add your first task and start building structure without stress.
+        </p>
+        <button class="btn btn-primary" id="emptyStateAddTaskBtn" style="margin-top: 1.25rem;">
+          Create your first task
+        </button>
+      </section>
+
+      <section id="tasksList" class="tasks-grid"></section>
+    </main>
+  </div>
+
+  <nav class="mobile-tabbar">
+    <a href="./dashboard.html">Home</a>
+    <a href="./planner.html">Planner</a>
+    <a href="./tasks.html" class="active">Tasks</a>
+    <a href="./insights.html">Insights</a>
+    <a href="./settings.html">Settings</a>
+  </nav>
+
+  <div class="modal-backdrop" id="taskModalBackdrop" style="display: none;">
+    <div class="modal-card glass-card">
+      <div class="panel-header">
+        <div>
+          <h3>Create task</h3>
+          <p>Add something intentional, not just another guilt brick.</p>
+        </div>
+        <button class="btn btn-ghost modal-close-btn" id="closeTaskModalBtn">Close</button>
+      </div>
+
+      <form id="createTaskForm" class="auth-form" style="margin-top: 0;">
+        <div class="form-group">
+          <label class="form-label" for="taskTitle">Task title</label>
+          <input type="text" id="taskTitle" name="title" class="form-input" placeholder="E.g. Practice drawing" required />
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="taskDescription">Description</label>
+          <textarea id="taskDescription" name="description" class="form-input" rows="4" placeholder="Optional notes..."></textarea>
+        </div>
+
+        <div class="task-modal-grid">
+          <div class="form-group">
+            <label class="form-label" for="taskPriority">Priority</label>
+            <select id="taskPriority" name="priority" class="form-input">
+              <option value="low">Low</option>
+              <option value="medium" selected>Medium</option>
+              <option value="high">High</option>
+              <option value="urgent">Urgent</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="taskPlanningMode">Planning mode</label>
+            <select id="taskPlanningMode" name="planningMode" class="form-input">
+              <option value="todo">To-do</option>
+              <option value="timetable">Timetable</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="taskDifficultyLevel">Difficulty (1-5)</label>
+            <input type="number" id="taskDifficultyLevel" name="difficultyLevel" class="form-input" min="1" max="5" value="3" />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="taskEstimatedMinutes">Estimated minutes</label>
+            <input type="number" id="taskEstimatedMinutes" name="estimatedMinutes" class="form-input" min="1" placeholder="30" />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="taskDueDate">Due date</label>
+            <input type="datetime-local" id="taskDueDate" name="dueDate" class="form-input" />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="taskReminderAt">Reminder</label>
+            <input type="datetime-local" id="taskReminderAt" name="reminderAt" class="form-input" />
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Save Task</button>
+      </form>
+    </div>
+  </div>
+
+  <script type="module" src="../js/pages/tasks.js"></script>
+</body>
+</html>

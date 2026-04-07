@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en" class="theme-summer-raspberry">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard | ArcList</title>
+  <link rel="stylesheet" href="../css/main.css">
+  <script type="module">
+  import { getUser } from "../js/utils/session.js";
+  import { applyTheme } from "../js/utils/theme.js";
+
+  const user = getUser();
+  applyTheme(user?.theme || "summer-raspberry");
+</script>
+</head>
+<body class="theme-summer-raspberry">
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="sidebar-panel">
+        <a href="./dashboard.html" class="sidebar-brand">
+          <span class="brand-name">ArcList</span>
+          <span class="powered-by">powered by archives</span>
+        </a>
+
+        <nav class="sidebar-nav">
+          <a href="./dashboard.html" class="nav-item active">Dashboard</a>
+          <a href="./planner.html" class="nav-item">Planner</a>
+          <a href="./calendar.html" class="nav-item">Calendar</a>
+          <a href="./tasks.html" class="nav-item">Tasks</a>
+          <a href="./insights.html" class="nav-item">Insights</a>
+          <a href="./friends.html" class="nav-item">Friends</a>
+          <a href="./messages.html" class="nav-item">Messages</a>
+          <a href="./notifications.html" class="nav-item nav-item-with-badge">
+            <span>Notifications</span>
+            <span class="notification-badge" data-notification-badge></span>
+          </a>
+          <a href="./settings.html" class="nav-item">Settings</a>
+        </nav>
+
+        <div class="sidebar-foot">
+        <div class="sidebar-user">
+    <strong id="sidebarUserName">User</strong>
+    <span id="sidebarUserMeta">@username</span>
+</div>
+        </div>
+      </div>
+    </aside>
+
+    <main class="main-area">
+      <header class="topbar">
+        <div class="topbar-title">
+  <h1 id="dashboardGreeting">Welcome back</h1>
+  <p>Here’s your productivity snapshot for today. Calm, clear, dangerous.</p>
+</div>
+
+        <div class="topbar-actions">
+  <a href="./planner.html" class="btn btn-secondary">Open Planner</a>
+  <button type="button" class="btn btn-primary">Add Task</button>
+  <button type="button" class="btn btn-ghost" data-logout>Logout</button>
+</div>
+      </header>
+
+      <section class="stats-grid">
+        <article class="stat-card glass-card">
+          <span class="stat-label">Current streak</span>
+          <div class="stat-value">12</div>
+          <span class="stat-meta">You’ve shown up 12 days straight.</span>
+        </article>
+
+        <article class="stat-card glass-card">
+          <span class="stat-label">Completed today</span>
+          <div class="stat-value">7/10</div>
+          <span class="stat-meta">70% of your locked plan is done.</span>
+        </article>
+
+        <article class="stat-card glass-card">
+          <span class="stat-label">Urgency score</span>
+          <div class="stat-value">3</div>
+          <span class="stat-meta">Three tasks deserve attention soon.</span>
+        </article>
+      </section>
+
+      <section class="dashboard-grid" style="margin-top: 1rem;">
+        <div class="dashboard-column">
+          <article class="panel glass-card">
+            <div class="panel-header">
+              <div>
+                <h2>Today’s urgent tasks</h2>
+                <p>Things most likely to affect your momentum today.</p>
+              </div>
+              <span class="badge">Live overview</span>
+            </div>
+
+            <div class="task-preview-list">
+              <div class="task-preview-item">
+                <div class="task-preview-top">
+                  <div>
+                    <h4>Complete database schema draft</h4>
+                    <p>Planner / Backend · due by 3:30 PM</p>
+                  </div>
+                  <span class="priority-pill">High</span>
+                </div>
+              </div>
+
+              <div class="task-preview-item">
+                <div class="task-preview-top">
+                  <div>
+                    <h4>Revise pharmacology notes</h4>
+                    <p>Academics · due by 6:00 PM</p>
+                  </div>
+                  <span class="priority-pill">Medium</span>
+                </div>
+              </div>
+
+              <div class="task-preview-item">
+                <div class="task-preview-top">
+                  <div>
+                    <h4>Message Daniel about API integration</h4>
+                    <p>Collaboration · overdue by 25 mins</p>
+                  </div>
+                  <span class="priority-pill">Urgent</span>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="panel glass-card">
+            <div class="panel-header">
+              <div>
+                <h2>Quick actions</h2>
+                <p>Fast moves for when your brain is juggling 45 tabs.</p>
+              </div>
+            </div>
+
+            <div class="quick-actions">
+              <a href="./tasks.html" class="quick-action">
+                <h4>Create a task</h4>
+                <p>Add something new with notes, tags, priority, and reminders.</p>
+              </a>
+
+              <a href="./planner.html" class="quick-action">
+                <h4>Lock today’s plan</h4>
+                <p>Commit to a structured day and reduce decision fatigue.</p>
+              </a>
+
+              <a href="./insights.html" class="quick-action">
+                <h4>Review your patterns</h4>
+                <p>Check skipped categories, peak windows, and delay trends.</p>
+              </a>
+
+              <a href="./friends.html" class="quick-action">
+                <h4>Collaborate with a friend</h4>
+                <p>Share momentum, invite accountability, and track shared goals.</p>
+              </a>
+            </div>
+          </article>
+
+          <article class="panel glass-card">
+            <div class="panel-header">
+              <div>
+                <h2>Smart suggestions</h2>
+                <p>Behavior-aware hints based on your recent planning patterns.</p>
+              </div>
+            </div>
+
+            <div class="suggestion-list">
+              <div class="suggestion-item">
+                <h4>Move deep work earlier</h4>
+                <p>You’ve been completing difficult tasks more consistently between 9:00 AM and 11:30 AM.</p>
+              </div>
+
+              <div class="suggestion-item">
+                <h4>Reduce high-priority stacking</h4>
+                <p>Your afternoon block currently has too many mentally expensive tasks packed together.</p>
+              </div>
+
+              <div class="suggestion-item">
+                <h4>Protect your streak with one small win</h4>
+                <p>If energy drops later, complete one short crucial task first so the day still closes strong.</p>
+              </div>
+            </div>
+          </article>
+        </div>
+
+        <div class="dashboard-column">
+          <article class="panel glass-card">
+            <div class="panel-header">
+              <div>
+                <h3>Momentum</h3>
+                <p>Your current completion rhythm.</p>
+              </div>
+            </div>
+
+            <div class="progress-ring-card">
+              <div class="progress-ring"></div>
+              <div>
+                <h4 style="margin-bottom: 0.45rem;">Strong follow-through today</h4>
+                <p class="section-copy">
+                  Your day is leaning productive. Keep the next task small and clear so you don’t lose the pace.
+                </p>
+              </div>
+            </div>
+          </article>
+
+          <article class="panel glass-card">
+            <div class="panel-header">
+              <div>
+                <h3>Recent activity</h3>
+                <p>Reminders, alerts, and collaboration signals.</p>
+              </div>
+            </div>
+
+            <div class="notification-list" id="dashboardNotificationsPreview"></div>
+
+          </article>
+
+          <article class="panel glass-card">
+            <div class="panel-header">
+              <div>
+                <h3>Evaluation preview</h3>
+                <p>A quick glance at how today is shaping up.</p>
+              </div>
+            </div>
+
+            <div class="suggestion-list">
+              <div class="suggestion-item">
+                <h4>Focus score: 8.1/10</h4>
+                <p>You’re staying on plan better than your recent 7-day average.</p>
+              </div>
+
+              <div class="suggestion-item">
+                <h4>Most active category: Academics</h4>
+                <p>Academic tasks are dominating today’s workload so far.</p>
+              </div>
+
+              <div class="suggestion-item">
+                <h4>Schedule adherence: 74%</h4>
+                <p>You’re running a bit late on one major block, but still recoverable.</p>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <nav class="mobile-tabbar">
+    <a href="./dashboard.html" class="active">Home</a>
+    <a href="./planner.html">Planner</a>
+    <a href="./tasks.html">Tasks</a>
+    <a href="./insights.html">Insights</a>
+    <a href="./settings.html">Settings</a>
+  </nav>
+
+  <script type="module">
+  import { requireAuth, bindLogoutButtons } from "../js/utils/guard.js";
+  import { getNotificationSummary } from "../js/api/notifications.js";
+  import { renderNotificationBadges } from "../js/components/notificationBadge.js";
+
+  const user = requireAuth();
+
+  if (user) {
+    const firstName = user.display_name?.split(" ")[0] || user.username || "there";
+
+    const greeting = document.getElementById("dashboardGreeting");
+    const sidebarUserName = document.getElementById("sidebarUserName");
+    const sidebarUserMeta = document.getElementById("sidebarUserMeta");
+
+    if (greeting) {
+      greeting.textContent = `Welcome back, ${firstName}`;
+    }
+
+    if (sidebarUserName) {
+      sidebarUserName.textContent = user.display_name || firstName;
+    }
+
+    if (sidebarUserMeta) {
+      sidebarUserMeta.textContent = `@${user.username}`;
+    }
+  }
+
+  bindLogoutButtons();
+  renderNotificationBadges();
+
+  const previewContainer = document.getElementById("dashboardNotificationsPreview");
+
+  function formatDateTime(value) {
+    if (!value) return "Recently";
+
+    const date = new Date(value);
+    if (Number.isNaN(date.getTime())) return "Recently";
+
+    return date.toLocaleString([], {
+      dateStyle: "medium",
+      timeStyle: "short",
+    });
+  }
+
+  async function loadDashboardNotificationPreview() {
+    if (!previewContainer) return;
+
+    try {
+      const result = await getNotificationSummary();
+      const recent = result.data?.recent || [];
+
+      if (!recent.length) {
+        previewContainer.innerHTML = `
+          <div class="notification-item">
+            <h4>No recent activity</h4>
+            <p>Your reminders and alerts will start showing here when they’re generated.</p>
+          </div>
+        `;
+        return;
+      }
+
+      previewContainer.innerHTML = recent
+        .map(
+          (notification) => `
+            <div class="notification-item">
+              <div class="notification-top">
+                <h4>${notification.title}</h4>
+                <span class="tag-pill">${formatDateTime(notification.scheduled_for || notification.created_at)}</span>
+              </div>
+              <p>${notification.message}</p>
+            </div>
+          `
+        )
+        .join("");
+    } catch (error) {
+      previewContainer.innerHTML = `
+        <div class="notification-item">
+          <h4>Couldn’t load activity</h4>
+          <p>Please try again later.</p>
+        </div>
+      `;
+    }
+  }
+
+  loadDashboardNotificationPreview();
+</script>
+</body>
+</html>

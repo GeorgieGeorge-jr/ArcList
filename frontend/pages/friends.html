@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en" class="theme-summer-raspberry">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Friends | ArcList</title>
+  <link rel="stylesheet" href="../css/main.css" />
+</head>
+<body class="theme-summer-raspberry">
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="sidebar-panel">
+        <a href="./dashboard.html" class="sidebar-brand">
+          <span class="brand-name">ArcList</span>
+          <span class="powered-by">powered by archives</span>
+        </a>
+
+        <nav class="sidebar-nav">
+          <a href="./dashboard.html" class="nav-item">Dashboard</a>
+          <a href="./planner.html" class="nav-item">Planner</a>
+          <a href="./calendar.html" class="nav-item">Calendar</a>
+          <a href="./tasks.html" class="nav-item">Tasks</a>
+          <a href="./insights.html" class="nav-item">Insights</a>
+          <a href="./friends.html" class="nav-item active">Friends</a>
+          <a href="./messages.html" class="nav-item">Messages</a>
+          <a href="./notifications.html" class="nav-item nav-item-with-badge">
+            <span>Notifications</span>
+            <span class="notification-badge" data-notification-badge></span>
+          </a>
+          <a href="./settings.html" class="nav-item">Settings</a>
+        </nav>
+
+        <div class="sidebar-foot">
+          <div class="sidebar-user">
+            <strong id="sidebarUserName">User</strong>
+            <span id="sidebarUserMeta">@username</span>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <main class="main-area">
+      <header class="topbar">
+        <div class="topbar-title">
+          <h1 id="friendsPageTitle">Friends</h1>
+          <p>Find people, send requests, and build the accountability layer properly.</p>
+        </div>
+
+        <div class="topbar-actions">
+          <button class="btn btn-ghost" data-logout>Logout</button>
+        </div>
+      </header>
+
+      <section class="friends-top-grid">
+        <article class="panel glass-card">
+          <div class="panel-header">
+            <div>
+              <h2>Find people</h2>
+              <p>Search by username or display name.</p>
+            </div>
+          </div>
+
+          <div class="auth-form" style="margin-top: 0;">
+            <div class="form-group">
+              <label class="form-label" for="friendSearchInput">Search users</label>
+              <input
+                id="friendSearchInput"
+                class="form-input"
+                type="text"
+                placeholder="Try username or display name..."
+              />
+            </div>
+          </div>
+
+          <div id="friendSearchResults" class="friends-card-list" style="margin-top: 1rem;"></div>
+        </article>
+
+        <article class="panel glass-card">
+          <div class="panel-header">
+            <div>
+              <h2>Overview</h2>
+              <p>Quick pulse of your social layer.</p>
+            </div>
+          </div>
+
+          <div class="stats-grid friends-mini-stats">
+            <article class="stat-card glass-card">
+              <span class="stat-label">Friends</span>
+              <div class="stat-value" id="friendsCountValue">0</div>
+              <span class="stat-meta">Current connections</span>
+            </article>
+
+            <article class="stat-card glass-card">
+              <span class="stat-label">Incoming</span>
+              <div class="stat-value" id="incomingCountValue">0</div>
+              <span class="stat-meta">Pending requests</span>
+            </article>
+
+            <article class="stat-card glass-card">
+              <span class="stat-label">Outgoing</span>
+              <div class="stat-value" id="outgoingCountValue">0</div>
+              <span class="stat-meta">Requests sent</span>
+            </article>
+          </div>
+        </article>
+      </section>
+
+      <section class="friends-sections-grid" style="margin-top: 1rem;">
+        <article class="panel glass-card">
+          <div class="panel-header">
+            <div>
+              <h2>Incoming requests</h2>
+              <p>People waiting on your response.</p>
+            </div>
+          </div>
+          <div id="incomingRequestsList" class="friends-card-list"></div>
+        </article>
+
+        <article class="panel glass-card">
+          <div class="panel-header">
+            <div>
+              <h2>Outgoing requests</h2>
+              <p>Requests you’ve already sent.</p>
+            </div>
+          </div>
+          <div id="outgoingRequestsList" class="friends-card-list"></div>
+        </article>
+      </section>
+
+      <section class="panel glass-card" style="margin-top: 1rem;">
+        <div class="panel-header">
+          <div>
+            <h2>Your friends</h2>
+            <p>Your current friend list inside ArcList.</p>
+          </div>
+        </div>
+        <div id="friendsList" class="friends-card-list"></div>
+      </section>
+    </main>
+  </div>
+
+  <nav class="mobile-tabbar">
+    <a href="./dashboard.html">Home</a>
+    <a href="./planner.html">Planner</a>
+    <a href="./tasks.html">Tasks</a>
+    <a href="./insights.html">Insights</a>
+    <a href="./settings.html">Settings</a>
+  </nav>
+
+  <script type="module">
+    import { getUser } from "../js/utils/session.js";
+    import { applyTheme } from "../js/utils/theme.js";
+
+    const user = getUser();
+    applyTheme(user?.theme || "summer-raspberry");
+  </script>
+  <script type="module" src="../js/pages/friends.js"></script>
+</body>
+</html>

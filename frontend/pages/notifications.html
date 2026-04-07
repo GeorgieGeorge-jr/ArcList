@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en" class="theme-summer-raspberry">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Notifications | ArcList</title>
+  <link rel="stylesheet" href="../css/main.css" />
+</head>
+<body class="theme-summer-raspberry">
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="sidebar-panel">
+        <a href="./dashboard.html" class="sidebar-brand">
+          <span class="brand-name">ArcList</span>
+          <span class="powered-by">powered by archives</span>
+        </a>
+
+        <nav class="sidebar-nav">
+          <a href="./dashboard.html" class="nav-item">Dashboard</a>
+          <a href="./planner.html" class="nav-item">Planner</a>
+          <a href="./calendar.html" class="nav-item">Calendar</a>
+          <a href="./tasks.html" class="nav-item">Tasks</a>
+          <a href="./insights.html" class="nav-item">Insights</a>
+          <a href="./friends.html" class="nav-item">Friends</a>
+          <a href="./messages.html" class="nav-item">Messages</a>
+          <a href="./notifications.html" class="nav-item nav-item-with-badge active">
+            <span>Notifications</span>
+            <span class="notification-badge" data-notification-badge></span>
+          </a>
+          <a href="./settings.html" class="nav-item">Settings</a>
+        </nav>
+
+        <div class="sidebar-foot">
+          <div class="sidebar-user">
+            <strong id="sidebarUserName">User</strong>
+            <span id="sidebarUserMeta">@username</span>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <main class="main-area">
+      <header class="topbar">
+        <div class="topbar-title">
+          <h1 id="notificationsPageTitle">Notifications</h1>
+          <p>Reminders, overdue nudges, and useful taps on the shoulder.</p>
+        </div>
+
+        <div class="topbar-actions">
+          <button class="btn btn-secondary" id="generateNotificationsBtn">Refresh feed</button>
+          <button class="btn btn-secondary" id="markAllReadBtn">Mark all as read</button>
+          <button class="btn btn-ghost" data-logout>Logout</button>
+        </div>
+      </header>
+
+      <section id="notificationsEmptyState" class="panel glass-card empty-state" style="display: none;">
+        <span class="badge">Quiet for now</span>
+        <h2 style="margin-top: 1rem;">Quiet for now… you’re either ahead of your day, or ignoring responsibilities beautifully.</h2>
+        <p class="section-copy" style="margin-top: 0.6rem;">
+          When reminders, overdue tasks, or review nudges appear, they’ll show up here.
+        </p>
+      </section>
+
+      <section id="notificationsList" class="notification-feed"></section>
+    </main>
+  </div>
+
+  <nav class="mobile-tabbar">
+    <a href="./dashboard.html">Home</a>
+    <a href="./planner.html">Planner</a>
+    <a href="./tasks.html">Tasks</a>
+    <a href="./insights.html">Insights</a>
+    <a href="./settings.html">Settings</a>
+  </nav>
+
+  <script type="module">
+    import { getUser } from "../js/utils/session.js";
+    import { applyTheme } from "../js/utils/theme.js";
+
+    const user = getUser();
+    applyTheme(user?.theme || "summer-raspberry");
+  </script>
+  <script type="module" src="../js/pages/notifications.js"></script>
+</body>
+</html>

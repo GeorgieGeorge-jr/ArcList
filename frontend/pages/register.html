@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en" class="theme-summer-raspberry">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Create Account | ArcList</title>
+  <link rel="stylesheet" href="../css/main.css" />
+  <script type="module">
+  import { getUser } from "../js/utils/session.js";
+  import { applyTheme } from "../js/utils/theme.js";
+
+  const user = getUser();
+  applyTheme(user?.theme || "summer-raspberry");
+</script>
+</head>
+<body class="theme-summer-raspberry">
+  <main class="auth-shell">
+    <section class="auth-card glass-card">
+      <a href="./index.html" class="brand">
+        <span class="brand-name">ArcList</span>
+        <span class="powered-by">powered by archives</span>
+      </a>
+
+      <h1>Create your Arc</h1>
+      <p>Build a planning system that actually fits your life, not one that nags you into burnout.</p>
+
+      <form class="auth-form" id="registerForm">
+        <div class="form-group">
+          <label class="form-label" for="displayName">Display Name</label>
+          <input class="form-input" type="text" id="displayName" name="displayName" placeholder="George" required />
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="username">Username</label>
+          <input class="form-input" type="text" id="username" name="username" placeholder="george.dev" required />
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="registerEmail">Email</label>
+          <input class="form-input" type="email" id="registerEmail" name="email" placeholder="you@example.com" required />
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="registerPassword">Password</label>
+          <input class="form-input" type="password" id="registerPassword" name="password" placeholder="Create a strong password" required />
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="confirmPassword">Confirm Password</label>
+          <input class="form-input" type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm your password" required />
+        </div>
+
+        <button type="submit" class="btn btn-primary">Create Account</button>
+    </form>
+
+    <p class="auth-footer">
+        Already have an account?
+        <a href="./login.html" class="form-link">Login</a>
+    </p>
+    </section>
+</main>
+<script type="module">
+  import { registerUser } from "../js/api/auth.js";
+  import { saveSession } from "../js/utils/session.js";
+  import { redirectIfAuthenticated } from "../js/utils/guard.js";
+
+  redirectIfAuthenticated();
+
+  const form = document.getElementById("registerForm");
+
+  form.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    const formData = new FormData(form);
+
+    const payload = {
+      displayName: formData.get("displayName"),
+      username: formData.get("username"),
+      email: formData.get("email"),
+      password: formData.get("password"),
+      confirmPassword: formData.get("confirmPassword"),
+    };
+
+    try {
+      const result = await registerUser(payload);
+
+      saveSession({
+        token: result.data.token,
+        user: result.data.user,
+      });
+
+      alert("Account created successfully.");
+      window.location.href = "./dashboard.html";
+    } catch (error) {
+      alert(error.message);
+    }
+  });
+</script>
+</body>
+</html>

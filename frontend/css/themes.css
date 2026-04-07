@@ -1,0 +1,124 @@
+:root {
+  --bg-0: #1f0613;
+  --bg-1: #2a0818;
+  --bg-2: #351022;
+  --surface-1: rgba(255, 255, 255, 0.06);
+  --surface-2: rgba(255, 255, 255, 0.1);
+  --surface-3: rgba(255, 255, 255, 0.14);
+  --border-soft: rgba(255, 255, 255, 0.08);
+  --border-strong: rgba(255, 255, 255, 0.16);
+  --text-1: #f8eaf0;
+  --text-2: #d7b6c4;
+  --text-3: #ad8794;
+  --accent-1: #720137;
+  --accent-2: #590054;
+  --accent-3: #5e0009;
+  --success: #79c99e;
+  --warning: #ffbf69;
+  --danger: #ff7b8f;
+  --shadow-lg: 0 20px 50px rgba(0, 0, 0, 0.35);
+  --shadow-md: 0 12px 30px rgba(0, 0, 0, 0.24);
+  --radius-xl: 28px;
+  --radius-lg: 20px;
+  --radius-md: 14px;
+  --radius-sm: 10px;
+  --container-width: 1200px;
+  --transition: 220ms ease;
+  --font-main: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+html.theme-summer-raspberry {
+  --bg-0: #46000d;
+  --bg-1: #5e0009;
+  --bg-2: #720137;
+  --text-1: #fff4f8;
+  --text-2: #e7c7d1;
+  --text-3: #b9919e;
+  --accent-1: #720137;
+  --accent-2: #590054;
+  --accent-3: #42002e;
+}
+
+html.theme-midnight-indigo {
+  --bg-0: #0f1020;
+  --bg-1: #171a33;
+  --bg-2: #23285a;
+  --text-1: #f4f5ff;
+  --text-2: #c9ccef;
+  --text-3: #959ac6;
+  --accent-1: #5865f2;
+  --accent-2: #7c5cff;
+  --accent-3: #2f3ea8;
+}
+
+html.theme-emerald-bloom {
+  --bg-0: #071b16;
+  --bg-1: #0d2a22;
+  --bg-2: #113d31;
+  --text-1: #f1fff8;
+  --text-2: #c6ead8;
+  --text-3: #89b7a2;
+  --accent-1: #1fa971;
+  --accent-2: #167e58;
+  --accent-3: #0f5f42;
+}
+
+html.theme-obsidian-sky {
+  --bg-0: #090b12;
+  --bg-1: #111522;
+  --bg-2: #1a2133;
+  --text-1: #f4f7ff;
+  --text-2: #c9d3eb;
+  --text-3: #8793b4;
+  --accent-1: #4f7cff;
+  --accent-2: #2747a8;
+  --accent-3: #1c2e66;
+}
+
+html.theme-amber-smoke {
+  --bg-0: #1b120b;
+  --bg-1: #2a1b11;
+  --bg-2: #3b2616;
+  --text-1: #fff6ef;
+  --text-2: #e7d0be;
+  --text-3: #b29279;
+  --accent-1: #d97706;
+  --accent-2: #b45309;
+  --accent-3: #7c2d12;
+}
+
+html.theme-royal-plum {
+  --bg-0: #180818;
+  --bg-1: #25102d;
+  --bg-2: #341447;
+  --text-1: #fff2ff;
+  --text-2: #e6cdee;
+  --text-3: #b693c2;
+  --accent-1: #a855f7;
+  --accent-2: #7e22ce;
+  --accent-3: #581c87;
+}
+
+html.theme-ocean-noir {
+  --bg-0: #07141a;
+  --bg-1: #0d2028;
+  --bg-2: #12313c;
+  --text-1: #effcff;
+  --text-2: #c4e2e9;
+  --text-3: #82aab3;
+  --accent-1: #06b6d4;
+  --accent-2: #0e7490;
+  --accent-3: #164e63;
+}
+
+html.theme-forest-velvet {
+  --bg-0: #0a1610;
+  --bg-1: #102319;
+  --bg-2: #173226;
+  --text-1: #f1fff8;
+  --text-2: #cbe6d7;
+  --text-3: #88b09b;
+  --accent-1: #22c55e;
+  --accent-2: #15803d;
+  --accent-3: #14532d;
+}

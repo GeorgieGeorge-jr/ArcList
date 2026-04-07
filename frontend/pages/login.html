@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en" class="theme-summer-raspberry">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login | ArcList</title>
+  <link rel="stylesheet" href="../css/main.css" />
+  <script type="module">
+  import { getUser } from "../js/utils/session.js";
+  import { applyTheme } from "../js/utils/theme.js";
+
+  const user = getUser();
+  applyTheme(user?.theme || "summer-raspberry");
+</script>
+</head>
+<body class="theme-summer-raspberry">
+  <main class="auth-shell">
+    <section class="auth-card glass-card">
+      <a href="./index.html" class="brand">
+        <span class="brand-name">ArcList</span>
+        <span class="powered-by">powered by archives</span>
+      </a>
+
+      <h1>Welcome back</h1>
+      <p>Pick up where you left off. Your plans, progress, and momentum are waiting.</p>
+
+      <form class="auth-form" id="loginForm">
+        <div class="form-group">
+          <label class="form-label" for="loginIdentifier">Email or Username</label>
+          <input class="form-input" type="text" id="loginIdentifier" name="identifier" placeholder="Enter your email or username" required />
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="loginPassword">Password</label>
+          <input class="form-input" type="password" id="loginPassword" name="password" placeholder="Enter your password" required />
+        </div>
+
+        <div class="form-row">
+          <label class="form-helper">
+            <input type="checkbox" name="rememberMe" />
+            Remember me
+          </label>
+
+          <a href="./forgot-password.html" class="form-link">Forgot password?</a>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Login</button>
+      </form>
+
+      <p class="auth-footer">
+        Don’t have an account?
+        <a href="./register.html" class="form-link">Create one</a>
+      </p>
+    </section>
+</main>
+<script type="module">
+import { loginUser } from "../js/api/auth.js";
+
+const form = document.getElementById("loginForm");
+
+form.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    const formData = new FormData(form);
+
+    const payload = {
+    identifier: formData.get("identifier"),
+    password: formData.get("password"),
+    };
+
+    try {
+    const result = await loginUser(payload);
+
+    localStorage.setItem("arclist_token", result.data.token);
+    localStorage.setItem("arclist_user", JSON.stringify(result.data.user));
+
+    alert("Login successful.");
+    window.location.href = "./dashboard.html";
+    } catch (error) {
+    alert(error.message);
+    }
+});
+</script>
+</body>
+</html>

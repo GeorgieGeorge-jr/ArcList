@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en" class="theme-summer-raspberry">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Insights | ArcList</title>
+  <link rel="stylesheet" href="../css/main.css" />
+  <script type="module">
+  import { getUser } from "../js/utils/session.js";
+  import { applyTheme } from "../js/utils/theme.js";
+
+  const user = getUser();
+  applyTheme(user?.theme || "summer-raspberry");
+</script>
+</head>
+<body class="theme-summer-raspberry">
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="sidebar-panel">
+        <a href="./dashboard.html" class="sidebar-brand">
+          <span class="brand-name">ArcList</span>
+          <span class="powered-by">powered by archives</span>
+        </a>
+
+        <nav class="sidebar-nav">
+          <a href="./dashboard.html" class="nav-item">Dashboard</a>
+          <a href="./planner.html" class="nav-item">Planner</a>
+          <a href="./calendar.html" class="nav-item">Calendar</a>
+          <a href="./tasks.html" class="nav-item">Tasks</a>
+          <a href="./insights.html" class="nav-item active">Insights</a>
+          <a href="./friends.html" class="nav-item">Friends</a>
+          <a href="./messages.html" class="nav-item">Messages</a>
+          <a href="./notifications.html" class="nav-item nav-item-with-badge">
+            <span>Notifications</span>
+            <span class="notification-badge" data-notification-badge></span>
+          </a>
+          <a href="./settings.html" class="nav-item">Settings</a>
+        </nav>
+
+        <div class="sidebar-foot">
+          <div class="sidebar-user">
+            <strong id="sidebarUserName">User</strong>
+            <span id="sidebarUserMeta">@username</span>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <main class="main-area">
+      <header class="topbar">
+        <div class="topbar-title">
+          <h1 id="insightsTitle">Insights</h1>
+          <p>See how your day is actually going, not just how it feels in your head.</p>
+        </div>
+
+        <div class="topbar-actions">
+          <input type="date" id="insightsDate" class="form-input" style="min-width: 180px;" />
+          <button class="btn btn-secondary" id="generateInsightsBtn">Refresh Evaluation</button>
+          <button class="btn btn-ghost" data-logout>Logout</button>
+        </div>
+      </header>
+
+      <section class="stats-grid">
+        <article class="stat-card glass-card">
+          <span class="stat-label">Completion</span>
+          <div class="stat-value" id="completionPercentageValue">0%</div>
+          <span class="stat-meta">Daily plan completion percentage</span>
+        </article>
+
+        <article class="stat-card glass-card">
+          <span class="stat-label">Completed tasks</span>
+          <div class="stat-value" id="completedTasksValue">0</div>
+          <span class="stat-meta">Tasks finished in the selected plan</span>
+        </article>
+
+        <article class="stat-card glass-card">
+          <span class="stat-label">Overdue tasks</span>
+          <div class="stat-value" id="overdueTasksValue">0</div>
+          <span class="stat-meta">Tasks that slipped past due time</span>
+        </article>
+      </section>
+
+      <section class="dashboard-grid" style="margin-top: 1rem;">
+        <div class="dashboard-column">
+          <article class="panel glass-card">
+            <div class="panel-header">
+              <div>
+                <h2>Evaluation summary</h2>
+                <p>A compact reading of your day’s structure and performance.</p>
+              </div>
+            </div>
+
+            <div class="suggestion-list">
+              <div class="suggestion-item">
+                <h4>Strongest category</h4>
+                <p id="strongestCategoryValue">—</p>
+              </div>
+
+              <div class="suggestion-item">
+                <h4>Most skipped category</h4>
+                <p id="mostSkippedCategoryValue">—</p>
+              </div>
+
+              <div class="suggestion-item">
+                <h4>Estimated minutes completed</h4>
+                <p id="estimatedMinutesCompletedValue">0 minutes</p>
+              </div>
+
+              <div class="suggestion-item">
+                <h4>Consistency score</h4>
+                <p id="consistencyScoreValue">0</p>
+              </div>
+            </div>
+          </article>
+
+          <article class="panel glass-card">
+            <div class="panel-header">
+              <div>
+                <h2>Daily note</h2>
+                <p>Auto-generated summary snapshot.</p>
+              </div>
+            </div>
+
+            <div class="suggestion-item">
+              <h4>Summary</h4>
+              <p id="summaryNoteValue">No evaluation generated yet.</p>
+            </div>
+          </article>
+        </div>
+
+        <div class="dashboard-column">
+          <article class="panel glass-card">
+            <div class="panel-header">
+              <div>
+                <h3>Recent evaluations</h3>
+                <p>Recent daily performance snapshots.</p>
+              </div>
+            </div>
+
+            <div id="recentEvaluationsList" class="notification-list"></div>
+          </article>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <nav class="mobile-tabbar">
+    <a href="./dashboard.html">Home</a>
+    <a href="./planner.html">Planner</a>
+    <a href="./tasks.html">Tasks</a>
+    <a href="./insights.html" class="active">Insights</a>
+    <a href="./settings.html">Settings</a>
+  </nav>
+
+  <script type="module" src="../js/pages/insights.js">
+    import { renderNotificationBadges } from "../js/components/notificationBadge.js";
+
+    renderNotificationBadges();
+  </script>
+</body>
+</html>

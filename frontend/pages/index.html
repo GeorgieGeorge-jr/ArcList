@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en" class="theme-summer-raspberry">
+<head>
+  <meta charset="UTF-8" >
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" >
+  <title>ArcList | Plan Better. Follow Through.</title>
+  <link rel="stylesheet" href="../css/main.css" >
+  <script type="module">
+  import { getUser } from "../js/utils/session.js";
+  import { applyTheme } from "../js/utils/theme.js";
+
+  const user = getUser();
+  applyTheme(user?.theme || "summer-raspberry");
+</script>
+</head>
+<body class="theme-summer-raspberry">
+  <header class="site-header">
+    <div class="container site-header-inner">
+      <a href="./index.html" class="brand">
+        <span class="brand-name">ArcList</span>
+        <span class="powered-by">powered by archives</span>
+      </a>
+
+      <nav class="nav-links">
+        <a href="./login.html" class="btn btn-ghost">Login</a>
+        <a href="./register.html" class="btn btn-primary">Get Started</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <span class="badge">Smart planning • elegant execution</span>
+          <h1>Organize your life without drowning in it.</h1>
+          <p>
+            ArcList helps you manage academics, goals, chores, hobbies,
+            self-care, deadlines, and collaborative plans in one premium,
+            focused workspace that still feels calm.
+          </p>
+
+          <div class="hero-actions">
+            <a href="./register.html" class="btn btn-primary">Create Account</a>
+            <a href="./login.html" class="btn btn-secondary">I already have an account</a>
+          </div>
+        </div>
+
+        <div class="hero-panel glass-card">
+          <div class="app-preview">
+            <div class="preview-card">
+              <h4>Today’s Arc</h4>
+              <p>Lock in your day plan, track momentum, and keep your tasks clear without visual clutter.</p>
+            </div>
+
+            <div class="preview-card">
+              <h4>Smarter Timing</h4>
+              <p>Get suggestions based on when you actually perform best, not random productivity guilt.</p>
+            </div>
+
+            <div class="preview-card">
+              <h4>Subtle Accountability</h4>
+              <p>Collaborate with friends, share progress intentionally, and build consistency together.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="features">
+      <div class="container">
+        <span class="badge">Core experience</span>
+        <h2 class="section-title" style="margin-top: 1rem;">Built for structure, streaks, and real life.</h2>
+        <p class="section-copy" style="margin-top: 0.85rem; max-width: 62ch;">
+          Not just a to-do list. Not just a calendar. ArcList combines flexible planning,
+          behavior-aware insights, reminders, collaboration, and polished progress tracking.
+        </p>
+
+        <div class="features-grid">
+          <article class="feature-card glass-card">
+            <h3>Daily Planning</h3>
+            <p>Create focused day plans in to-do mode or schedule mode, then lock them in with intention.</p>
+          </article>
+
+          <article class="feature-card glass-card">
+            <h3>Smart Insights</h3>
+            <p>Track consistency, skipped categories, focus windows, delays, and real performance patterns.</p>
+          </article>
+
+          <article class="feature-card glass-card">
+            <h3>Elegant Reminders</h3>
+            <p>Stay ahead with task alerts, review reminders, overdue nudges, and streak-saving prompts.</p>
+          </article>
+
+          <article class="feature-card glass-card">
+            <h3>Social Accountability</h3>
+            <p>Work with friends, support each other, and make progress feel shared without becoming childish.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="cta-strip">
+      <div class="container">
+        <div class="cta-card glass-card">
+          <div>
+            <span class="badge">Install-ready PWA</span>
+            <h3 style="margin-top: 0.85rem; font-size: 1.6rem;">Use it like a real app on mobile.</h3>
+            <p class="section-copy" style="margin-top: 0.5rem; max-width: 50ch;">
+              ArcList is designed to feel clean and natural on desktop and especially smooth on iPhone home screen.
+            </p>
+          </div>
+
+          <div>
+            <a href="./register.html" class="btn btn-primary">Start Planning</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      ArcList — plan better, follow through.
+    </div>
+  </footer>
+  <script type="module">
+  import { loginUser } from "../js/api/auth.js";
+  import { saveSession } from "../js/utils/session.js";
+  import { redirectIfAuthenticated } from "../js/utils/guard.js";
+
+  redirectIfAuthenticated();
+
+  const form = document.getElementById("loginForm");
+
+  form.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    const formData = new FormData(form);
+
+    const payload = {
+      identifier: formData.get("identifier"),
+      password: formData.get("password"),
+    };
+
+    try {
+      const result = await loginUser(payload);
+
+      saveSession({
+        token: result.data.token,
+        user: result.data.user,
+      });
+
+      alert("Login successful.");
+      window.location.href = "./dashboard.html";
+    } catch (error) {
+      alert(error.message);
+    }
+  });
+</script>
+</body>
+</html>
