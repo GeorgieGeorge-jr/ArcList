@@ -1,6 +1,6 @@
 import { getToken } from "../utils/session.js";
 
-const API_BASE_URL = "http://localhost:5050/api";
+import { API_BASE_URL } from "../config.js";
 
 async function getConversations() {
   const token = getToken();

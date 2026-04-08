@@ -1,4 +1,4 @@
-const API_BASE_URL = "http://localhost:5050/api";
+import { API_BASE_URL } from "../config.js";
 
 async function registerUser(payload) {
   const response = await fetch(`${API_BASE_URL}/auth/register`, {
