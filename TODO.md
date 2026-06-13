@@ -1,7 +1,7 @@
-- [ ] Implement planner timetable + recurrence support per selection (auto-add recurring tasks on load)
-- [ ] Add backend logic to expand recurring tasks into day_plan_tasks for selected plan date
-- [ ] Ensure lock semantics: only allow removal of tasks added after lock; recurring auto-added tasks should probably mark added_after_lock=false unless generated during unlock
-- [ ] Update planner UI to visually differentiate timetable mode (e.g., sort by planned_start and display timeline)
-- [ ] Ensure plannerMode change/save persists and reload behaves correctly
-- [ ] Syntax check (node -c) and quick endpoint smoke tests
+## Auth Fix Steps (ArcList)
 
+- [ ] Verify DB env vars + MySQL connection log on server startup.
+- [ ] Fix frontend API_BASE_URL to reliably target correct backend origin (prevents login “load failed” on deployed environments).
+- [ ] Harden backend JWT_SECRET handling and improve auth error messages for debugging.
+- [ ] Confirm protected frontend API requests send `Authorization: Bearer <token>` (verify token exists in localStorage).
+- [ ] Validate login stores `arclist_token` and `arclist_user` and subsequent page guards succeed.
