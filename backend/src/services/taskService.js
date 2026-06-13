@@ -36,11 +36,25 @@ async function toggleUserTaskCompletion(userId, taskId) {
     throw new Error("Task not found.");
   }
 
-  const nextStatus =
-    task.status === "completed" ? "pending" : "completed";
+  // Toggle only between pending <-> completed.
+  // This prevents accidental transitions from archived/in_progress into completed.
+  const currentStatus = task.status;
+  let nextStatus;
+
+  if (currentStatus === "completed") {
+    nextStatus = "pending";
+  } else if (currentStatus === "pending" || currentStatus === "in_progress") {
+    // Allow toggling in_progress back to completed/pending semantics.
+    nextStatus = "completed";
+  } else if (currentStatus === "archived") {
+    throw new Error("Archived tasks cannot be toggled.");
+  } else {
+    throw new Error(`Unsupported task status: ${currentStatus}`);
+  }
 
   return updateTaskCompletion(task.id, nextStatus);
 }
+
 
 module.exports = {
   createUserTask,

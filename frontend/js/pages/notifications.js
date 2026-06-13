@@ -175,8 +175,7 @@ markAllReadBtn?.addEventListener("click", async () => {
   }
 });
 
-setInterval(() => {
-  loadNotifications();
-}, 30000);
-
+// Avoid hammering the server every 30s.
+// Notifications are refreshed via explicit buttons and on page load.
 loadNotifications();
+

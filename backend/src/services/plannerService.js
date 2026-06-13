@@ -38,9 +38,31 @@ async function ensureDayPlan(userId, planDate) {
 
 async function getPlannerSnapshot(userId, planDate) {
   const plan = await ensureDayPlan(userId, planDate);
+
+  // Expand recurring tasks into day_plan_tasks for this date (idempotent).
+  // NOTE: Planner DB schema currently supports task recurrence fields, but
+  // plannerService doesn't expand them yet. We treat any task with
+  // tasks.is_recurring=1 + tasks.recurrence_pattern as recurring.
+  //
+  // Supported recurrence_pattern values (from UI/seed defaults):
+  // - "daily"   -> every day
+  // - "weekly"  -> every week (anchored to due_date if present, else created_at)
+  //
+  // If recurrence_pattern is unrecognized, we do not expand it.
+  //
+  // Lock semantics: recurring auto-added tasks are considered "not user-added",
+  // so we set added_after_lock=false if the plan is already locked.
+  // (User can still add/remove separately via existing lock rules.)
+  const expanded = await require("./plannerRecurrence").expandRecurringTasksForDay({
+    userId,
+    planId: plan.id,
+    planDate: plan.plan_date,
+    isLocked: Boolean(plan.is_locked),
+  });
+
   const tasks = await getPlanTasks(plan.id);
 
-  return { plan, tasks };
+  return { plan, tasks, expanded };
 }
 
 async function savePlannerSettings(userId, payload) {

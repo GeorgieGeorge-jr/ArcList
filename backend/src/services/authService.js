@@ -1,4 +1,4 @@
-const bcrypt = require("bcrypt");
+const bcryptjs = require("bcryptjs");
 const generateToken = require("../utils/generateToken");
 const {
   findUserByEmail,
@@ -23,7 +23,7 @@ async function registerUser({ displayName, username, email, password }) {
     throw new Error("Username is already taken.");
   }
 
-  const passwordHash = await bcrypt.hash(password, 12);
+  const passwordHash = await bcryptjs.hash(password, 12);
 
   const user = await createUser({
     displayName: cleanedDisplayName,
@@ -49,7 +49,11 @@ async function loginUser({ identifier, password }) {
     throw new Error("Invalid credentials.");
   }
 
-  const passwordMatches = await bcrypt.compare(password, user.password_hash);
+  const passwordMatches = await bcryptjs.compare(
+    password,
+    user.password_hash
+  );
+
   if (!passwordMatches) {
     throw new Error("Invalid credentials.");
   }

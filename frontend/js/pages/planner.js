@@ -117,6 +117,18 @@ function renderPlannerMeta() {
 function renderPlanTasks() {
   plannerTasksList.innerHTML = "";
 
+  // In timetable mode, present tasks ordered by planned_start (nulls last).
+  // This makes timetable mode meaningful without adding new UI components.
+  let tasksToRender = [...currentPlanTasks];
+  if (currentPlan?.planning_mode === "timetable") {
+    tasksToRender.sort((a, b) => {
+      const aStart = a.planned_start ? new Date(a.planned_start).getTime() : Number.POSITIVE_INFINITY;
+      const bStart = b.planned_start ? new Date(b.planned_start).getTime() : Number.POSITIVE_INFINITY;
+      if (aStart !== bStart) return aStart - bStart;
+      return (a.sort_order ?? 0) - (b.sort_order ?? 0);
+    });
+  }
+
   if (!currentPlanTasks.length) {
     plannerEmptyState.style.display = "block";
     plannerTasksList.style.display = "none";
@@ -126,7 +138,7 @@ function renderPlanTasks() {
   plannerEmptyState.style.display = "none";
   plannerTasksList.style.display = "grid";
 
-  currentPlanTasks.forEach((task) => {
+  tasksToRender.forEach((task) => {
     const card = document.createElement("article");
     card.className = "planner-task-card";
 

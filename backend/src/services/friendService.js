@@ -42,28 +42,41 @@ async function sendFriendRequest(currentUserId, receiverId) {
     throw new Error("This user is not accepting friend requests.");
   }
 
-  const existingFriendship = await findFriendship(currentUserId, normalizedReceiverId);
+  const existingFriendship = await findFriendship(
+    currentUserId,
+    normalizedReceiverId,
+  );
   if (existingFriendship) {
     throw new Error("You are already friends.");
   }
 
-  const existingForward = await findFriendRequest(currentUserId, normalizedReceiverId);
+  const existingForward = await findFriendRequest(
+    currentUserId,
+    normalizedReceiverId,
+  );
   if (existingForward && existingForward.status === "pending") {
     throw new Error("Friend request already sent.");
   }
 
-  const existingReverse = await findFriendRequest(normalizedReceiverId, currentUserId);
+  const existingReverse = await findFriendRequest(
+    normalizedReceiverId,
+    currentUserId,
+  );
   if (existingReverse && existingReverse.status === "pending") {
     throw new Error("This user has already sent you a friend request.");
   }
 
-  const request = await createFriendRequest(currentUserId, normalizedReceiverId);
+  const request = await createFriendRequest(
+    currentUserId,
+    normalizedReceiverId,
+  );
 
   await createNotification({
     userId: normalizedReceiverId,
     type: "system",
     title: "New friend request",
     message: "Someone sent you a friend request.",
+    relatedRequestId: request.id,
     scheduledFor: new Date(),
   });
 

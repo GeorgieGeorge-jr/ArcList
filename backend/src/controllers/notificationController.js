@@ -10,7 +10,8 @@ async function getNotifications(req, res) {
   try {
     const userId = req.user.id;
 
-    await generateTaskNotificationsForUser(userId);
+    // Do not generate notifications on every GET.
+    // Generation should be explicit via /generate-now (or cron/queue later).
     const notifications = await getUserNotifications(userId);
 
     return res.status(200).json({
@@ -26,11 +27,12 @@ async function getNotifications(req, res) {
   }
 }
 
+
 async function getNotificationSummaryController(req, res) {
   try {
     const userId = req.user.id;
 
-    await generateTaskNotificationsForUser(userId);
+    // Do not generate notifications on every summary GET.
     const summary = await getNotificationSummary(userId);
 
     return res.status(200).json({
@@ -45,6 +47,7 @@ async function getNotificationSummaryController(req, res) {
     });
   }
 }
+
 
 async function generateNotificationsNow(req, res) {
   try {
