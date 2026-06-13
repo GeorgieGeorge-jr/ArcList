@@ -59,26 +59,40 @@ import { loginUser } from "../js/api/auth.js";
 const form = document.getElementById("loginForm");
 
 form.addEventListener("submit", async (event) => {
-    event.preventDefault();
+  event.preventDefault();
 
-    const formData = new FormData(form);
+  const formData = new FormData(form);
 
-    const payload = {
+  const payload = {
     identifier: formData.get("identifier"),
     password: formData.get("password"),
-    };
+  };
 
-    try {
+  try {
     const result = await loginUser(payload);
 
-    localStorage.setItem("arclist_token", result.data.token);
-    localStorage.setItem("arclist_user", JSON.stringify(result.data.user));
+    console.log("login result:", result);
+
+    const token = result?.data?.token;
+    const user = result?.data?.user;
+
+    if (!token || typeof token !== "string") {
+      throw new Error("Login token missing/invalid from server response.");
+    }
+
+    if (!user) {
+      throw new Error("Login user missing from server response.");
+    }
+
+    localStorage.setItem("arclist_token", token);
+    localStorage.setItem("arclist_user", JSON.stringify(user));
 
     alert("Login successful.");
     window.location.href = "./dashboard.html";
-    } catch (error) {
+  } catch (error) {
+    console.error("Login error:", error);
     alert(error.message);
-    }
+  }
 });
 </script>
 </body>
