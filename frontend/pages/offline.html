@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" class="theme-summer-raspberry">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ArcList | Offline</title>
+  <link rel="manifest" href="/manifest.json">
+  <link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon.png">
+  <meta name="theme-color" content="#46000d">
+  <link rel="stylesheet" href="../css/main.css">
+  <script type="module">
+    import { getUser } from "../js/utils/session.js";
+    import { applyTheme } from "../js/utils/theme.js";
+    applyTheme(getUser()?.theme || "summer-raspberry");
+  </script>
+  <style>
+    .offline-wrap {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 2rem;
+      gap: 1rem;
+    }
+    .offline-wrap h1 { font-size: 1.6rem; }
+    .offline-wrap p { color: var(--text-2); max-width: 32ch; }
+  </style>
+</head>
+<body class="theme-summer-raspberry">
+  <div class="offline-wrap">
+    <h1>You're offline</h1>
+    <p>ArcList needs a connection to sync your tasks and plans. Reconnect and try again — nothing you've already loaded has been lost.</p>
+    <button class="btn btn-primary" onclick="window.location.reload()">Try again</button>
+  </div>
+</body>
+</html>
