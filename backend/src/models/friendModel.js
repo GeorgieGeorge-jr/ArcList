@@ -145,8 +145,9 @@ async function getOutgoingFriendRequests(userId) {
 async function createFriendPair(userId, friendId) {
   await pool.query(
     `
-      INSERT IGNORE INTO friends (user_id, friend_id)
+      INSERT INTO friends (user_id, friend_id)
       VALUES (?, ?), (?, ?)
+      ON CONFLICT (user_id, friend_id) DO NOTHING
     `,
     [userId, friendId, friendId, userId]
   );

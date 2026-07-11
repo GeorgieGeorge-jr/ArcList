@@ -187,7 +187,7 @@ async function findDailyReviewCandidate(userId) {
       FROM notifications
       WHERE user_id = ?
         AND type = 'daily_review'
-        AND DATE(created_at) = CURDATE()
+        AND created_at::date = CURRENT_DATE
       LIMIT 1
     `,
     [userId]

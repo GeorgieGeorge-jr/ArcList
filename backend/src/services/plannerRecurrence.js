@@ -26,7 +26,7 @@ async function expandRecurringTasksForDay({ userId, planId, planDate, isLocked }
       recurrence_pattern
     FROM tasks
     WHERE user_id = ?
-      AND is_recurring = 1
+      AND is_recurring = TRUE
       AND recurrence_pattern IS NOT NULL
       AND recurrence_pattern <> ''
     `,
@@ -81,9 +81,9 @@ async function expandRecurringTasksForDay({ userId, planId, planDate, isLocked }
         added_after_lock,
         completed_in_plan
       )
-      VALUES (?, ?, ?, NULL, NULL, ?, 0)
-      ON DUPLICATE KEY UPDATE
-        added_after_lock = VALUES(added_after_lock)
+      VALUES (?, ?, ?, NULL, NULL, ?, false)
+      ON CONFLICT (day_plan_id, task_id) DO UPDATE SET
+        added_after_lock = EXCLUDED.added_after_lock
       `,
       [planId, task.id, 0, addedAfterLock]
     );

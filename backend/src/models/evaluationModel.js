@@ -43,16 +43,16 @@ async function upsertDailyEvaluation({
         summary_note
       )
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-      ON DUPLICATE KEY UPDATE
-        completion_percentage = VALUES(completion_percentage),
-        completed_tasks_count = VALUES(completed_tasks_count),
-        pending_tasks_count = VALUES(pending_tasks_count),
-        overdue_tasks_count = VALUES(overdue_tasks_count),
-        strongest_category = VALUES(strongest_category),
-        most_skipped_category = VALUES(most_skipped_category),
-        total_estimated_minutes_completed = VALUES(total_estimated_minutes_completed),
-        consistency_score = VALUES(consistency_score),
-        summary_note = VALUES(summary_note)
+      ON CONFLICT (user_id, plan_date) DO UPDATE SET
+        completion_percentage = EXCLUDED.completion_percentage,
+        completed_tasks_count = EXCLUDED.completed_tasks_count,
+        pending_tasks_count = EXCLUDED.pending_tasks_count,
+        overdue_tasks_count = EXCLUDED.overdue_tasks_count,
+        strongest_category = EXCLUDED.strongest_category,
+        most_skipped_category = EXCLUDED.most_skipped_category,
+        total_estimated_minutes_completed = EXCLUDED.total_estimated_minutes_completed,
+        consistency_score = EXCLUDED.consistency_score,
+        summary_note = EXCLUDED.summary_note
     `,
     [
       userId,

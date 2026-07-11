@@ -8,7 +8,7 @@ const PORT = process.env.PORT || 5050;
 async function startServer() {
   try {
     await testConnection();
-    console.log("✅ MySQL connected successfully");
+    console.log("✅ PostgreSQL connected successfully");
 
     app.listen(PORT, () => {
       console.log(`🚀 ArcList server running on http://localhost:${PORT}`);
