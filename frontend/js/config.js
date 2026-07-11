@@ -1,7 +1,7 @@
 // IMPORTANT: your frontend (Netlify) and backend (Render) are on different
 // domains, so this MUST be the backend's actual origin — it can never be
 // derived from window.location.origin (that's the frontend's own domain).
-const RENDER_BACKEND_URL = "https://REPLACE-WITH-YOUR-RENDER-URL.onrender.com/api";
+const RENDER_BACKEND_URL = "https://arclist-api.onrender.com/api";
 
 const isLocalHost =
   window.location.hostname === "localhost" ||
