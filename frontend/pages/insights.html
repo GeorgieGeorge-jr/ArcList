@@ -63,33 +63,41 @@
       <header class="topbar">
         <div class="topbar-title">
           <h1 id="insightsTitle">Insights</h1>
-          <p>See how your day is actually going, not just how it feels in your head.</p>
         </div>
 
         <div class="topbar-actions">
           <input type="date" id="insightsDate" class="form-input" style="min-width: 180px;" />
           <button class="btn btn-secondary" id="generateInsightsBtn">Refresh Evaluation</button>
-          <button class="btn btn-ghost" data-logout>Logout</button>
+          <a href="./settings.html" class="avatar-chip" data-avatar-chip aria-label="Open settings"></a>
         </div>
       </header>
 
       <section class="stats-grid">
         <article class="stat-card glass-card">
-          <span class="stat-label">Completion</span>
-          <div class="stat-value" id="completionPercentageValue">0%</div>
-          <span class="stat-meta">Daily plan completion percentage</span>
+          <span class="stat-row-icon">📈</span>
+          <div class="stat-row-body">
+            <span class="stat-label">Completion</span>
+            <div class="stat-value" id="completionPercentageValue">0%</div>
+            <span class="stat-meta">Daily plan completion percentage</span>
+          </div>
         </article>
 
         <article class="stat-card glass-card">
-          <span class="stat-label">Completed tasks</span>
-          <div class="stat-value" id="completedTasksValue">0</div>
-          <span class="stat-meta">Tasks finished in the selected plan</span>
+          <span class="stat-row-icon">✅</span>
+          <div class="stat-row-body">
+            <span class="stat-label">Completed tasks</span>
+            <div class="stat-value" id="completedTasksValue">0</div>
+            <span class="stat-meta">Tasks finished in the selected plan</span>
+          </div>
         </article>
 
         <article class="stat-card glass-card">
-          <span class="stat-label">Overdue tasks</span>
-          <div class="stat-value" id="overdueTasksValue">0</div>
-          <span class="stat-meta">Tasks that slipped past due time</span>
+          <span class="stat-row-icon">⏰</span>
+          <div class="stat-row-body">
+            <span class="stat-label">Overdue tasks</span>
+            <div class="stat-value" id="overdueTasksValue">0</div>
+            <span class="stat-meta">Tasks that slipped past due time</span>
+          </div>
         </article>
       </section>
 

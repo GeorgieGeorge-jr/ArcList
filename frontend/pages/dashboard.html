@@ -62,34 +62,61 @@
     <main class="main-area">
       <header class="topbar">
         <div class="topbar-title">
-  <h1 id="dashboardGreeting">Welcome back</h1>
-  <p>Here’s your productivity snapshot for today. Calm, clear, dangerous.</p>
+  <span class="greeting-label">Welcome back,</span>
+  <h1 id="dashboardGreeting">there 👋</h1>
 </div>
 
-        <div class="topbar-actions">
-  <a href="./planner.html" class="btn btn-secondary">Open Planner</a>
-  <button type="button" class="btn btn-primary">Add Task</button>
-  <button type="button" class="btn btn-ghost" data-logout>Logout</button>
+        <div class="page-header-side">
+  <a href="./settings.html" class="avatar-chip" data-avatar-chip aria-label="Open settings"></a>
+  <a href="./planner.html" class="btn btn-secondary pill-action">📅 Open Planner</a>
 </div>
       </header>
 
-      <section class="stats-grid">
+      <section class="panel glass-card progress-hero-card">
+        <div class="progress-hero-ring" data-percent="70" id="homeProgressRing"></div>
+        <div class="progress-hero-body">
+          <h3>Today's Progress</h3>
+          <p id="homeProgressCaption">7 of 10 tasks completed</p>
+        </div>
+        <span class="progress-hero-trend">↗</span>
+      </section>
+
+      <a href="./tasks.html" class="cta-gradient-btn" style="margin-top: 0.85rem;">
+        <span class="icon-circle">+</span>
+        Add Task
+      </a>
+
+      <div class="quick-link-row" style="margin-top: 0.85rem;">
+        <a href="./planner.html" class="quick-link-btn">📅 Planner</a>
+        <a href="./insights.html" class="quick-link-btn">📊 Insights</a>
+      </div>
+
+      <section class="stats-grid" style="margin-top: 1rem;">
         <article class="stat-card glass-card">
-          <span class="stat-label">Current streak</span>
-          <div class="stat-value">12</div>
-          <span class="stat-meta">You’ve shown up 12 days straight.</span>
+          <span class="stat-row-icon">🔥</span>
+          <div class="stat-row-body">
+            <span class="stat-label">Current streak</span>
+            <div class="stat-value">12</div>
+            <span class="stat-meta">You’ve shown up 12 days straight.</span>
+          </div>
         </article>
 
         <article class="stat-card glass-card">
-          <span class="stat-label">Completed today</span>
-          <div class="stat-value">7/10</div>
-          <span class="stat-meta">70% of your locked plan is done.</span>
+          <span class="stat-row-icon">✅</span>
+          <div class="stat-row-body">
+            <span class="stat-label">Completed today</span>
+            <div class="stat-value">7/10</div>
+            <span class="stat-meta">70% of your locked plan is done.</span>
+          </div>
         </article>
 
         <article class="stat-card glass-card">
-          <span class="stat-label">Urgency score</span>
-          <div class="stat-value">3</div>
+          <span class="stat-row-icon">⚡</span>
+          <div class="stat-row-body">
+            <span class="stat-label">Urgency score</span>
+            <div class="stat-value">3</div>
           <span class="stat-meta">Three tasks deserve attention soon.</span>
+          </div>
         </article>
       </section>
 
@@ -272,6 +299,7 @@
   import { requireAuth, bindLogoutButtons } from "../js/utils/guard.js";
   import { getNotificationSummary } from "../js/api/notifications.js";
   import { renderNotificationBadges } from "../js/components/notificationBadge.js";
+  import { renderAvatarChip } from "../js/components/avatarChip.js";
 
   const user = requireAuth();
 
@@ -283,7 +311,7 @@
     const sidebarUserMeta = document.getElementById("sidebarUserMeta");
 
     if (greeting) {
-      greeting.textContent = `Welcome back, ${firstName}`;
+      greeting.textContent = `${firstName} 👋`;
     }
 
     if (sidebarUserName) {
@@ -297,6 +325,7 @@
 
   bindLogoutButtons();
   renderNotificationBadges();
+  renderAvatarChip();
 
   const previewContainer = document.getElementById("dashboardNotificationsPreview");
 

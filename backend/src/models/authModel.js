@@ -39,7 +39,7 @@ async function createUser({
   );
 
   const [rows] = await pool.query(
-    `SELECT id, display_name, username, email, theme_name, created_at
+    `SELECT id, display_name, username, email, theme_name, avatar_url, created_at
      FROM users
      WHERE id = ? LIMIT 1`,
     [result.insertId]

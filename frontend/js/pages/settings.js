@@ -3,10 +3,12 @@ import { getSettings, updateSettings } from "../api/settings.js";
 import { updateStoredUser } from "../utils/session.js";
 import { applyTheme } from "../utils/theme.js";
 import { renderNotificationBadges } from "../components/notificationBadge.js";
+import { renderAvatarChip } from "../components/avatarChip.js";
 
 const user = requireAuth();
 bindLogoutButtons();
 renderNotificationBadges();
+renderAvatarChip();
 
 const sidebarUserName = document.getElementById("sidebarUserName");
 const sidebarUserMeta = document.getElementById("sidebarUserMeta");

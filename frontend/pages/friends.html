@@ -52,11 +52,10 @@
       <header class="topbar">
         <div class="topbar-title">
           <h1 id="friendsPageTitle">Friends</h1>
-          <p>Find people, send requests, and build the accountability layer properly.</p>
         </div>
 
         <div class="topbar-actions">
-          <button class="btn btn-ghost" data-logout>Logout</button>
+          <a href="./settings.html" class="avatar-chip" data-avatar-chip aria-label="Open settings"></a>
         </div>
       </header>
 
@@ -94,21 +93,30 @@
 
           <div class="stats-grid friends-mini-stats">
             <article class="stat-card glass-card">
-              <span class="stat-label">Friends</span>
-              <div class="stat-value" id="friendsCountValue">0</div>
-              <span class="stat-meta">Current connections</span>
+              <span class="stat-row-icon">🤝</span>
+              <div class="stat-row-body">
+                <span class="stat-label">Friends</span>
+                <div class="stat-value" id="friendsCountValue">0</div>
+                <span class="stat-meta">Current connections</span>
+              </div>
             </article>
 
             <article class="stat-card glass-card">
-              <span class="stat-label">Incoming</span>
-              <div class="stat-value" id="incomingCountValue">0</div>
-              <span class="stat-meta">Pending requests</span>
+              <span class="stat-row-icon">📥</span>
+              <div class="stat-row-body">
+                <span class="stat-label">Incoming</span>
+                <div class="stat-value" id="incomingCountValue">0</div>
+                <span class="stat-meta">Pending requests</span>
+              </div>
             </article>
 
             <article class="stat-card glass-card">
-              <span class="stat-label">Outgoing</span>
-              <div class="stat-value" id="outgoingCountValue">0</div>
-              <span class="stat-meta">Requests sent</span>
+              <span class="stat-row-icon">📤</span>
+              <div class="stat-row-body">
+                <span class="stat-label">Outgoing</span>
+                <div class="stat-value" id="outgoingCountValue">0</div>
+                <span class="stat-meta">Requests sent</span>
+              </div>
             </article>
           </div>
         </article>

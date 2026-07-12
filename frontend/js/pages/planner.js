@@ -11,10 +11,12 @@ import {
   updatePlanTaskDuration,
 } from "../api/planner.js";
 import { renderNotificationBadges } from "../components/notificationBadge.js";
+import { renderAvatarChip } from "../components/avatarChip.js";
 
 const user = requireAuth();
 bindLogoutButtons();
 renderNotificationBadges();
+renderAvatarChip();
 
 const sidebarUserName = document.getElementById("sidebarUserName");
 const sidebarUserMeta = document.getElementById("sidebarUserMeta");

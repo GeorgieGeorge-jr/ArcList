@@ -199,3 +199,237 @@
   height: 16px;
   accent-color: var(--accent-1);
 }
+
+/* Avatar chip — used in place of a text-heavy header on every page */
+.avatar-chip {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
+  border: 1px solid var(--border-soft);
+  flex-shrink: 0;
+  text-decoration: none;
+}
+
+.avatar-chip img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.avatar-chip-initial {
+  color: white;
+  font-weight: 700;
+  font-size: 1.05rem;
+}
+
+/* Compact page header — greeting/title on the left, avatar on the right,
+   deliberately no description copy underneath per product direction */
+.page-header-compact {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.2rem;
+}
+
+.page-header-compact h1 {
+  font-size: clamp(1.5rem, 5vw, 2rem);
+  letter-spacing: -0.03em;
+}
+
+.page-header-side {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.6rem;
+}
+
+.page-header-side .pill-action {
+  padding: 0.5rem 0.95rem;
+  font-size: 0.82rem;
+  white-space: nowrap;
+}
+
+/* Hero progress card (Home page) */
+.progress-hero-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.05rem 1.2rem;
+}
+
+.progress-hero-ring {
+  width: 74px;
+  height: 74px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  box-shadow: inset 0 0 0 8px rgba(255, 255, 255, 0.05);
+}
+
+.progress-hero-ring::after {
+  content: attr(data-percent) "%";
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: rgba(20, 4, 14, 0.92);
+  display: grid;
+  place-items: center;
+  font-weight: 800;
+  font-size: 0.92rem;
+  color: var(--text-1);
+}
+
+.progress-hero-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.progress-hero-body h3 {
+  font-size: 1rem;
+  margin-bottom: 0.15rem;
+}
+
+.progress-hero-body p {
+  color: var(--text-2);
+  font-size: 0.84rem;
+}
+
+.progress-hero-trend {
+  color: var(--accent-1);
+  font-size: 1.3rem;
+  flex-shrink: 0;
+}
+
+/* Add Task-style CTA */
+.cta-gradient-btn {
+  width: 100%;
+  padding: 1rem;
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+  background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
+  color: white;
+  font-weight: 700;
+  font-size: 0.98rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  text-decoration: none;
+}
+
+.cta-gradient-btn .icon-circle {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(255, 255, 255, 0.7);
+  display: grid;
+  place-items: center;
+  font-size: 0.85rem;
+  flex-shrink: 0;
+}
+
+/* Two-up quick-link row (Planner / Insights on Home) */
+.quick-link-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.7rem;
+}
+
+.quick-link-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.85rem;
+  border-radius: 16px;
+  background: var(--surface-1);
+  border: 1px solid var(--border-soft);
+  color: var(--text-1);
+  font-weight: 600;
+  font-size: 0.88rem;
+  text-decoration: none;
+}
+
+/* Compact horizontal stat row — used at mobile widths in place of the
+   blocky vertical stat-card, without touching the JS-bound value IDs */
+.stat-row-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: 1.05rem;
+  flex-shrink: 0;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.stat-row-body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+}
+
+.stat-row-chevron {
+  color: var(--text-3);
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+
+@media (max-width: 640px) {
+  .page-header-side {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .stat-card {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    text-align: left;
+    padding: 0.85rem 1rem;
+  }
+
+  .stat-card .stat-row-body {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .stat-card .stat-label {
+    font-size: 0.76rem;
+  }
+
+  .stat-card .stat-value {
+    font-size: 1.3rem;
+    margin: 0.1rem 0;
+  }
+
+  .stat-card .stat-meta {
+    font-size: 0.75rem;
+  }
+
+  /* Turn topbar buttons into compact, content-hugging pills instead
+     of stretching every button to half the screen width. */
+  .topbar-actions {
+    width: auto;
+    justify-content: flex-end;
+  }
+
+  .topbar-actions .btn {
+    flex: 0 0 auto;
+    width: auto;
+    padding: 0.55rem 1rem;
+    font-size: 0.84rem;
+  }
+}

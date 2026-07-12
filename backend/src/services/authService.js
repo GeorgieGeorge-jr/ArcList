@@ -73,6 +73,8 @@ async function loginUser({ identifier, password }) {
       username: user.username,
       email: user.email,
       theme_name: user.theme_name,
+      theme: user.theme,
+      avatar_url: user.avatar_url,
     },
     token,
   };
