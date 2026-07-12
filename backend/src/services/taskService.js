@@ -22,6 +22,9 @@ async function createUserTask(userId, payload) {
       : null,
     dueDate: payload.dueDate || null,
     reminderAt: payload.reminderAt || null,
+    tagId: payload.tagId ? Number(payload.tagId) : null,
+    isRecurring: Boolean(payload.isRecurring),
+    recurrencePattern: payload.recurrencePattern || null,
   });
 }
 

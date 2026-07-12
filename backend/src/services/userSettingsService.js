@@ -50,12 +50,22 @@ async function saveUserSettings(userId, payload) {
     throw new Error("Invalid profile visibility selected.");
   }
 
+  const dailyHourCap = payload.dailyHourCap !== undefined
+    ? Number(payload.dailyHourCap)
+    : 8;
+
+  if (!Number.isFinite(dailyHourCap) || dailyHourCap < 1 || dailyHourCap > 20) {
+    throw new Error("Daily hour cap must be between 1 and 20 hours.");
+  }
+
   return updateUserSettingsById(userId, {
     displayName,
     avatarUrl,
     theme,
     defaultPlanningMode,
     defaultTaskDuration,
+    dailyHourCap,
+    shareDailyListWithFriends: Boolean(payload.shareDailyListWithFriends),
     notificationsEnabled: Boolean(payload.notificationsEnabled),
     reminderNotifications: Boolean(payload.reminderNotifications),
     dailyReviewNotifications: Boolean(payload.dailyReviewNotifications),

@@ -4,6 +4,8 @@ const {
   addExistingTaskToPlan,
   removePlannedTask,
   lockPlanner,
+  generatePlanForToday,
+  updatePlannedTaskDuration,
 } = require("../services/plannerService");
 
 async function getPlanner(req, res) {
@@ -107,4 +109,50 @@ module.exports = {
   addTask,
   removeTask,
   lockPlan,
+  generatePlan,
+  updateTaskDuration,
 };
+
+async function generatePlan(req, res) {
+  try {
+    const userId = req.user.id;
+    const { planDate } = req.body;
+
+    const result = await generatePlanForToday(userId, planDate);
+
+    return res.status(200).json({
+      success: true,
+      message:
+        result.generated.addedCount > 0
+          ? `Added ${result.generated.addedCount} task${result.generated.addedCount === 1 ? "" : "s"} to today's plan.`
+          : "Your backlog is empty — nothing to add right now.",
+      data: result,
+    });
+  } catch (error) {
+    return res.status(400).json({
+      success: false,
+      message: error.message || "Failed to generate today's plan.",
+    });
+  }
+}
+
+async function updateTaskDuration(req, res) {
+  try {
+    const userId = req.user.id;
+    const { planTaskId } = req.params;
+    const { plannedDurationMinutes } = req.body;
+
+    const result = await updatePlannedTaskDuration(userId, planTaskId, plannedDurationMinutes);
+
+    return res.status(200).json({
+      success: true,
+      message: "Duration updated.",
+      data: result,
+    });
+  } catch (error) {
+    return res.status(400).json({
+      success: false,
+      message: error.message || "Failed to update duration.",
+    });
+  }
+}

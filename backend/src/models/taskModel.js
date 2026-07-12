@@ -11,6 +11,9 @@ async function createTask(taskData) {
     estimatedMinutes,
     dueDate,
     reminderAt,
+    tagId,
+    isRecurring,
+    recurrencePattern,
   } = taskData;
 
   const [result] = await pool.query(
@@ -24,9 +27,12 @@ async function createTask(taskData) {
         difficulty_level,
         estimated_minutes,
         due_date,
-        reminder_at
+        reminder_at,
+        tag_id,
+        is_recurring,
+        recurrence_pattern
       )
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `,
     [
       userId,
@@ -38,6 +44,9 @@ async function createTask(taskData) {
       estimatedMinutes,
       dueDate,
       reminderAt,
+      tagId || null,
+      Boolean(isRecurring),
+      isRecurring ? recurrencePattern || null : null,
     ]
   );
 
@@ -47,6 +56,37 @@ async function createTask(taskData) {
   );
 
   return rows[0];
+}
+
+// Backlog = pending tasks not already attached to the given day's plan.
+// This is what "Generate my day" picks from.
+async function getBacklogTasksByUserId(userId, dayPlanId) {
+  const [rows] = await pool.query(
+    `
+      SELECT t.*, tt.name AS tag_name, tt.color AS tag_color
+      FROM tasks t
+      LEFT JOIN task_tags tt ON t.tag_id = tt.id
+      WHERE t.user_id = ?
+        AND t.status = 'pending'
+        AND NOT EXISTS (
+          SELECT 1 FROM day_plan_tasks dpt
+          WHERE dpt.task_id = t.id AND dpt.day_plan_id = ?
+        )
+      ORDER BY
+        CASE WHEN t.due_date IS NOT NULL AND t.due_date < NOW() THEN 0 ELSE 1 END,
+        CASE t.priority
+          WHEN 'urgent' THEN 1
+          WHEN 'high' THEN 2
+          WHEN 'medium' THEN 3
+          WHEN 'low' THEN 4
+        END,
+        t.due_date ASC NULLS LAST,
+        t.created_at ASC
+    `,
+    [userId, dayPlanId]
+  );
+
+  return rows;
 }
 
 async function getTasksByUserId(userId) {
@@ -109,6 +149,7 @@ async function updateTaskCompletion(taskId, nextStatus) {
 module.exports = {
   createTask,
   getTasksByUserId,
+  getBacklogTasksByUserId,
   findTaskByIdAndUserId,
   updateTaskCompletion,
 };

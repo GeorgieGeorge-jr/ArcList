@@ -91,6 +91,8 @@ async function getPlanTasks(planId) {
         dpt.sort_order,
         dpt.planned_start,
         dpt.planned_end,
+        dpt.planned_duration_minutes,
+        dpt.auto_assigned,
         dpt.added_after_lock,
         dpt.completed_in_plan,
         t.title,
@@ -122,6 +124,8 @@ async function addTaskToPlan({
   sortOrder = 0,
   plannedStart = null,
   plannedEnd = null,
+  plannedDurationMinutes = null,
+  autoAssigned = false,
   addedAfterLock = false,
 }) {
   const [result] = await pool.query(
@@ -132,11 +136,22 @@ async function addTaskToPlan({
         sort_order,
         planned_start,
         planned_end,
+        planned_duration_minutes,
+        auto_assigned,
         added_after_lock
       )
-      VALUES (?, ?, ?, ?, ?, ?)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?)
     `,
-    [dayPlanId, taskId, sortOrder, plannedStart, plannedEnd, addedAfterLock]
+    [
+      dayPlanId,
+      taskId,
+      sortOrder,
+      plannedStart,
+      plannedEnd,
+      plannedDurationMinutes,
+      autoAssigned,
+      addedAfterLock,
+    ]
   );
 
   const [rows] = await pool.query(
@@ -150,6 +165,24 @@ async function addTaskToPlan({
   );
 
   return rows[0];
+}
+
+async function updatePlanTaskDuration(planTaskId, plannedDurationMinutes) {
+  await pool.query(
+    `
+      UPDATE day_plan_tasks
+      SET planned_duration_minutes = ?, auto_assigned = FALSE
+      WHERE id = ?
+    `,
+    [plannedDurationMinutes, planTaskId]
+  );
+
+  const [rows] = await pool.query(
+    `SELECT * FROM day_plan_tasks WHERE id = ? LIMIT 1`,
+    [planTaskId]
+  );
+
+  return rows[0] || null;
 }
 
 async function removeTaskFromPlan(planTaskId) {
@@ -201,6 +234,7 @@ module.exports = {
   lockDayPlan,
   getPlanTasks,
   addTaskToPlan,
+  updatePlanTaskDuration,
   removeTaskFromPlan,
   findPlanTaskById,
   findTaskOwnedByUser,

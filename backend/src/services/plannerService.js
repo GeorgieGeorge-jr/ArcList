@@ -6,6 +6,7 @@ const {
   lockDayPlan,
   getPlanTasks,
   addTaskToPlan,
+  updatePlanTaskDuration,
   removeTaskFromPlan,
   findPlanTaskById,
   findTaskOwnedByUser,
@@ -150,10 +151,50 @@ async function lockPlanner(userId, planDate) {
   return { plan: lockedPlan, tasks };
 }
 
+async function generatePlanForToday(userId, planDate) {
+  const plan = await ensureDayPlan(userId, planDate);
+
+  if (plan.is_locked) {
+    throw new Error("This day is already locked in — generation only applies before you accept a plan.");
+  }
+
+  const { generateDailyPlan } = require("./plannerGenerator");
+  return generateDailyPlan(userId, plan);
+}
+
+async function updatePlannedTaskDuration(userId, planTaskId, plannedDurationMinutes) {
+  const planTask = await findPlanTaskById(Number(planTaskId));
+
+  if (!planTask) {
+    throw new Error("Planned task not found.");
+  }
+
+  const plan = await getDayPlanByIdAndUser(planTask.day_plan_id, userId);
+  if (!plan) {
+    throw new Error("You do not have access to this planned task.");
+  }
+
+  if (plan.is_locked) {
+    throw new Error("Durations cannot be changed after the plan is locked.");
+  }
+
+  const minutes = Number(plannedDurationMinutes);
+  if (!minutes || minutes <= 0) {
+    throw new Error("Duration must be a positive number of minutes.");
+  }
+
+  await updatePlanTaskDuration(planTask.id, minutes);
+  const tasks = await getPlanTasks(plan.id);
+
+  return { plan, tasks };
+}
+
 module.exports = {
   getPlannerSnapshot,
   savePlannerSettings,
   addExistingTaskToPlan,
   removePlannedTask,
   lockPlanner,
+  generatePlanForToday,
+  updatePlannedTaskDuration,
 };
