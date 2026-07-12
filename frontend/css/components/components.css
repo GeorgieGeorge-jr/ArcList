@@ -88,3 +88,114 @@
     width: 380px;
   }
 }
+
+/* Daily capacity bar (planner "Generate My Day" summary) */
+.capacity-track {
+  margin-top: 0.75rem;
+  height: 10px;
+  border-radius: 999px;
+  background: var(--bg-1);
+  overflow: hidden;
+  border: 1px solid var(--border-soft);
+}
+
+.capacity-fill {
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--accent-2), var(--accent-1));
+  transition: width 0.4s ease;
+}
+
+.capacity-fill.is-over {
+  background: linear-gradient(90deg, #b3312c, #e0554c);
+}
+
+/* Duration stepper on planner task cards */
+.duration-stepper {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: var(--bg-1);
+  border: 1px solid var(--border-soft);
+  border-radius: 999px;
+  padding: 0.2rem 0.3rem;
+}
+
+.duration-stepper button {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: none;
+  background: var(--bg-2);
+  color: var(--text-1);
+  cursor: pointer;
+  font-size: 0.9rem;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.duration-stepper button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.duration-stepper span {
+  font-size: 0.78rem;
+  color: var(--text-2);
+  min-width: 3.4rem;
+  text-align: center;
+}
+
+.meta-pill.auto-assigned {
+  border: 1px dashed var(--accent-1);
+  color: var(--text-2);
+}
+
+/* Task creation modal: collapsible "more options" + recurrence checkbox */
+.task-advanced-options {
+  margin-top: 0.4rem;
+  border-top: 1px solid var(--border-soft);
+  padding-top: 0.8rem;
+}
+
+.task-advanced-options summary {
+  cursor: pointer;
+  color: var(--text-2);
+  font-size: 0.88rem;
+  font-weight: 600;
+  list-style: none;
+}
+
+.task-advanced-options summary::-webkit-details-marker {
+  display: none;
+}
+
+.task-advanced-options summary::before {
+  content: "+ ";
+  color: var(--accent-1);
+}
+
+.task-advanced-options[open] summary::before {
+  content: "− ";
+}
+
+.checkbox-group {
+  margin-top: 0.9rem;
+}
+
+.form-checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.88rem;
+  color: var(--text-2);
+  cursor: pointer;
+}
+
+.form-checkbox-label input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--accent-1);
+}

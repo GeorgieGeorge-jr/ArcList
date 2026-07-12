@@ -67,11 +67,25 @@
         </div>
 
         <div class="topbar-actions">
+          <button class="btn btn-secondary" id="generatePlanBtn">✨ Generate My Day</button>
           <button class="btn btn-secondary" id="savePlannerBtn">Save Plan</button>
           <button class="btn btn-primary" id="lockPlannerBtn">Lock In</button>
           <button class="btn btn-ghost" data-logout>Logout</button>
         </div>
       </header>
+
+      <section class="panel glass-card" id="dayCapacityPanel">
+        <div class="panel-header">
+          <div>
+            <h3>Today's capacity</h3>
+            <p>How full today is, based on your daily hour cap.</p>
+          </div>
+          <span class="meta-pill" id="capacityLabel">0h / 8h</span>
+        </div>
+        <div class="capacity-track">
+          <div class="capacity-fill" id="capacityFill" style="width: 0%;"></div>
+        </div>
+      </section>
 
       <section class="planner-top-grid">
         <article class="panel glass-card">

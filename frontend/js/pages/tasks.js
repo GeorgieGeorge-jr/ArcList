@@ -37,6 +37,12 @@ const openTaskModalBtn = document.getElementById("openTaskModalBtn");
 const closeTaskModalBtn = document.getElementById("closeTaskModalBtn");
 const emptyStateAddTaskBtn = document.getElementById("emptyStateAddTaskBtn");
 const createTaskForm = document.getElementById("createTaskForm");
+const taskIsRecurring = document.getElementById("taskIsRecurring");
+const taskRecurrencePattern = document.getElementById("taskRecurrencePattern");
+
+taskIsRecurring?.addEventListener("change", () => {
+  taskRecurrencePattern.style.display = taskIsRecurring.checked ? "block" : "none";
+});
 
 let allTasks = [];
 
@@ -103,11 +109,14 @@ function renderTasks(tasks) {
       }
 
       <div class="task-meta-row">
-        <span class="meta-pill">Mode: ${task.planning_mode}</span>
-        <span class="meta-pill">Difficulty: ${task.difficulty_level}/5</span>
         ${
           task.estimated_minutes
             ? `<span class="meta-pill">${task.estimated_minutes} mins</span>`
+            : ""
+        }
+        ${
+          task.is_recurring
+            ? `<span class="meta-pill auto-assigned">Repeats ${task.recurrence_pattern || ""}</span>`
             : ""
         }
         ${
@@ -191,6 +200,7 @@ function openTaskModal() {
 function closeTaskModal() {
   taskModalBackdrop.style.display = "none";
   createTaskForm.reset();
+  if (taskRecurrencePattern) taskRecurrencePattern.style.display = "none";
 }
 
 openTaskModalBtn?.addEventListener("click", openTaskModal);
@@ -216,11 +226,11 @@ createTaskForm?.addEventListener("submit", async (event) => {
     title: formData.get("title"),
     description: formData.get("description"),
     priority: formData.get("priority"),
-    planningMode: formData.get("planningMode"),
-    difficultyLevel: formData.get("difficultyLevel"),
     estimatedMinutes: formData.get("estimatedMinutes"),
     dueDate: formData.get("dueDate") || null,
     reminderAt: formData.get("reminderAt") || null,
+    isRecurring: formData.get("isRecurring") === "on",
+    recurrencePattern: formData.get("recurrencePattern"),
   };
 
   try {

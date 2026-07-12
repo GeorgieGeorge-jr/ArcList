@@ -141,56 +141,63 @@
 
       <form id="createTaskForm" class="auth-form" style="margin-top: 0;">
         <div class="form-group">
-          <label class="form-label" for="taskTitle">Task title</label>
+          <label class="form-label" for="taskTitle">What do you need to do?</label>
           <input type="text" id="taskTitle" name="title" class="form-input" placeholder="E.g. Practice drawing" required />
         </div>
 
         <div class="form-group">
-          <label class="form-label" for="taskDescription">Description</label>
-          <textarea id="taskDescription" name="description" class="form-input" rows="4" placeholder="Optional notes..."></textarea>
+          <label class="form-label" for="taskPriority">Priority</label>
+          <select id="taskPriority" name="priority" class="form-input">
+            <option value="low">Low</option>
+            <option value="medium" selected>Medium</option>
+            <option value="high">High</option>
+            <option value="urgent">Urgent</option>
+          </select>
         </div>
 
-        <div class="task-modal-grid">
-          <div class="form-group">
-            <label class="form-label" for="taskPriority">Priority</label>
-            <select id="taskPriority" name="priority" class="form-input">
-              <option value="low">Low</option>
-              <option value="medium" selected>Medium</option>
-              <option value="high">High</option>
-              <option value="urgent">Urgent</option>
+        <p class="section-copy" style="margin: 0.4rem 0 0.8rem;">
+          That's it — it'll sit in your backlog until you generate or add it to a day.
+        </p>
+
+        <details class="task-advanced-options">
+          <summary>More options (optional)</summary>
+
+          <div class="form-group" style="margin-top: 0.8rem;">
+            <label class="form-label" for="taskDescription">Description</label>
+            <textarea id="taskDescription" name="description" class="form-input" rows="3" placeholder="Optional notes..."></textarea>
+          </div>
+
+          <div class="task-modal-grid">
+            <div class="form-group">
+              <label class="form-label" for="taskEstimatedMinutes">How long will this take? (mins)</label>
+              <input type="number" id="taskEstimatedMinutes" name="estimatedMinutes" class="form-input" min="1" placeholder="Leave blank to auto-estimate" />
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="taskDueDate">Due date</label>
+              <input type="datetime-local" id="taskDueDate" name="dueDate" class="form-input" />
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="taskReminderAt">Reminder</label>
+              <input type="datetime-local" id="taskReminderAt" name="reminderAt" class="form-input" />
+            </div>
+          </div>
+
+          <div class="form-group checkbox-group">
+            <label class="form-checkbox-label">
+              <input type="checkbox" id="taskIsRecurring" name="isRecurring" />
+              This repeats
+            </label>
+
+            <select id="taskRecurrencePattern" name="recurrencePattern" class="form-input" style="display: none; margin-top: 0.5rem;">
+              <option value="daily">Every day</option>
+              <option value="weekly">Every week</option>
             </select>
           </div>
+        </details>
 
-          <div class="form-group">
-            <label class="form-label" for="taskPlanningMode">Planning mode</label>
-            <select id="taskPlanningMode" name="planningMode" class="form-input">
-              <option value="todo">To-do</option>
-              <option value="timetable">Timetable</option>
-            </select>
-          </div>
-
-          <div class="form-group">
-            <label class="form-label" for="taskDifficultyLevel">Difficulty (1-5)</label>
-            <input type="number" id="taskDifficultyLevel" name="difficultyLevel" class="form-input" min="1" max="5" value="3" />
-          </div>
-
-          <div class="form-group">
-            <label class="form-label" for="taskEstimatedMinutes">Estimated minutes</label>
-            <input type="number" id="taskEstimatedMinutes" name="estimatedMinutes" class="form-input" min="1" placeholder="30" />
-          </div>
-
-          <div class="form-group">
-            <label class="form-label" for="taskDueDate">Due date</label>
-            <input type="datetime-local" id="taskDueDate" name="dueDate" class="form-input" />
-          </div>
-
-          <div class="form-group">
-            <label class="form-label" for="taskReminderAt">Reminder</label>
-            <input type="datetime-local" id="taskReminderAt" name="reminderAt" class="form-input" />
-          </div>
-        </div>
-
-        <button type="submit" class="btn btn-primary">Save Task</button>
+        <button type="submit" class="btn btn-primary" style="margin-top: 1rem;">Save Task</button>
       </form>
     </div>
   </div>

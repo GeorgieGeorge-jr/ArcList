@@ -103,10 +103,54 @@ async function lockPlanner(planDate) {
   return data;
 }
 
+async function generatePlanner(planDate) {
+  const token = getToken();
+
+  const response = await fetch(`${API_BASE_URL}/planner/generate`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ planDate }),
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.message || "Failed to generate today's plan.");
+  }
+
+  return data;
+}
+
+async function updatePlanTaskDuration(planTaskId, plannedDurationMinutes) {
+  const token = getToken();
+
+  const response = await fetch(`${API_BASE_URL}/planner/tasks/${planTaskId}/duration`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ plannedDurationMinutes }),
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.message || "Failed to update duration.");
+  }
+
+  return data;
+}
+
 export {
   getPlanner,
   savePlanner,
   addTaskToPlanner,
   removeTaskFromPlanner,
   lockPlanner,
+  generatePlanner,
+  updatePlanTaskDuration,
 };

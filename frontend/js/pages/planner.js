@@ -1,11 +1,14 @@
 import { requireAuth, bindLogoutButtons } from "../utils/guard.js";
 import { getTasks } from "../api/tasks.js";
+import { getSettings } from "../api/settings.js";
 import {
   getPlanner,
   savePlanner,
   addTaskToPlanner,
   removeTaskFromPlanner,
   lockPlanner,
+  generatePlanner,
+  updatePlanTaskDuration,
 } from "../api/planner.js";
 import { renderNotificationBadges } from "../components/notificationBadge.js";
 
@@ -25,6 +28,9 @@ const plannerTaskCount = document.getElementById("plannerTaskCount");
 
 const savePlannerBtn = document.getElementById("savePlannerBtn");
 const lockPlannerBtn = document.getElementById("lockPlannerBtn");
+const generatePlanBtn = document.getElementById("generatePlanBtn");
+const capacityLabel = document.getElementById("capacityLabel");
+const capacityFill = document.getElementById("capacityFill");
 
 const taskSelect = document.getElementById("taskSelect");
 const addTaskToPlanForm = document.getElementById("addTaskToPlanForm");
@@ -41,6 +47,7 @@ const confirmLockBtn = document.getElementById("confirmLockBtn");
 let currentPlan = null;
 let currentPlanTasks = [];
 let userTasks = [];
+let dailyHourCapMinutes = 480;
 
 function getTodayDateString() {
   return new Date().toISOString().slice(0, 10);
@@ -98,6 +105,21 @@ function populateTaskSelect() {
   });
 }
 
+function renderCapacity() {
+  const usedMinutes = currentPlanTasks.reduce(
+    (sum, t) => sum + (t.planned_duration_minutes || t.estimated_minutes || 0),
+    0
+  );
+
+  const usedHours = (usedMinutes / 60).toFixed(1);
+  const capHours = (dailyHourCapMinutes / 60).toFixed(1);
+  const percent = Math.min(100, Math.round((usedMinutes / dailyHourCapMinutes) * 100) || 0);
+
+  capacityLabel.textContent = `${usedHours}h / ${capHours}h`;
+  capacityFill.style.width = `${percent}%`;
+  capacityFill.classList.toggle("is-over", usedMinutes > dailyHourCapMinutes);
+}
+
 function renderPlannerMeta() {
   plannerMode.value = currentPlan?.planning_mode || "todo";
   plannerNotes.value = currentPlan?.notes || "";
@@ -107,10 +129,12 @@ function renderPlannerMeta() {
     plannerLockStatus.textContent = "Locked";
     lockPlannerBtn.disabled = true;
     lockPlannerBtn.textContent = "Locked In";
+    generatePlanBtn.disabled = true;
   } else {
     plannerLockStatus.textContent = "Unlocked";
     lockPlannerBtn.disabled = false;
     lockPlannerBtn.textContent = "Lock In";
+    generatePlanBtn.disabled = false;
   }
 }
 
@@ -150,6 +174,8 @@ function renderPlanTasks() {
         : null;
 
     const canRemove = !currentPlan.is_locked || task.added_after_lock;
+    const canEditDuration = !currentPlan.is_locked;
+    const currentDuration = task.planned_duration_minutes || task.estimated_minutes || 30;
 
     card.innerHTML = `
       <div class="planner-task-top">
@@ -163,8 +189,12 @@ function renderPlanTasks() {
       ${task.description ? `<p class="planner-task-copy">${task.description}</p>` : ""}
 
       <div class="task-meta-row">
-        <span class="meta-pill">Difficulty: ${task.difficulty_level}/5</span>
-        ${task.estimated_minutes ? `<span class="meta-pill">${task.estimated_minutes} mins</span>` : ""}
+        <div class="duration-stepper" data-duration-stepper="${task.plan_task_id}" data-duration="${currentDuration}">
+          <button type="button" data-duration-minus="${task.plan_task_id}" ${canEditDuration ? "" : "disabled"}>−</button>
+          <span data-duration-display="${task.plan_task_id}">${currentDuration} min</span>
+          <button type="button" data-duration-plus="${task.plan_task_id}" ${canEditDuration ? "" : "disabled"}>+</button>
+        </div>
+        ${task.auto_assigned ? `<span class="meta-pill auto-assigned">Auto</span>` : ""}
         ${task.tag_name ? `<span class="meta-pill">${task.tag_name}</span>` : ""}
         ${task.added_after_lock ? `<span class="meta-pill">Added after lock</span>` : ""}
       </div>
@@ -187,6 +217,39 @@ function renderPlanTasks() {
     plannerTasksList.appendChild(card);
   });
 
+  document.querySelectorAll("[data-duration-minus], [data-duration-plus]").forEach((button) => {
+    button.addEventListener("click", async () => {
+      const planTaskId = button.getAttribute("data-duration-minus") || button.getAttribute("data-duration-plus");
+      const stepper = document.querySelector(`[data-duration-stepper="${planTaskId}"]`);
+      const isMinus = button.hasAttribute("data-duration-minus");
+
+      const current = Number(stepper.getAttribute("data-duration")) || 30;
+      const next = Math.max(5, current + (isMinus ? -5 : 5));
+
+      // Optimistic UI update so the stepper feels instant.
+      stepper.setAttribute("data-duration", next);
+      const display = document.querySelector(`[data-duration-display="${planTaskId}"]`);
+      if (display) display.textContent = `${next} min`;
+
+      try {
+        const result = await updatePlanTaskDuration(planTaskId, next);
+        currentPlan = result.data.plan;
+        currentPlanTasks = result.data.tasks;
+        renderCapacity();
+
+        const updatedTask = currentPlanTasks.find((t) => String(t.plan_task_id) === String(planTaskId));
+        if (updatedTask) {
+          const badgeRow = display?.closest(".task-meta-row");
+          const autoBadge = badgeRow?.querySelector(".auto-assigned");
+          if (autoBadge) autoBadge.remove();
+        }
+      } catch (error) {
+        alert(error.message);
+        await loadPlanner();
+      }
+    });
+  });
+
   document.querySelectorAll("[data-remove-plan-task]").forEach((button) => {
     button.addEventListener("click", async () => {
       const planTaskId = button.getAttribute("data-remove-plan-task");
@@ -197,6 +260,7 @@ function renderPlanTasks() {
         currentPlanTasks = result.data.tasks;
         renderPlannerMeta();
         renderPlanTasks();
+    renderCapacity();
         populateTaskSelect();
       } catch (error) {
         alert(error.message);
@@ -213,6 +277,7 @@ async function loadPlanner() {
 
     renderPlannerMeta();
     renderPlanTasks();
+    renderCapacity();
     populateTaskSelect();
   } catch (error) {
     alert(error.message);
@@ -241,6 +306,7 @@ savePlannerBtn.addEventListener("click", async () => {
     currentPlanTasks = result.data.tasks || [];
     renderPlannerMeta();
     renderPlanTasks();
+    renderCapacity();
     alert("Planner saved.");
   } catch (error) {
     alert(error.message);
@@ -266,6 +332,7 @@ addTaskToPlanForm.addEventListener("submit", async (event) => {
 
     renderPlannerMeta();
     renderPlanTasks();
+    renderCapacity();
     populateTaskSelect();
   } catch (error) {
     alert(error.message);
@@ -274,6 +341,27 @@ addTaskToPlanForm.addEventListener("submit", async (event) => {
 
 plannerDate.addEventListener("change", async () => {
   await loadPlanner();
+});
+
+generatePlanBtn.addEventListener("click", async () => {
+  generatePlanBtn.disabled = true;
+  generatePlanBtn.textContent = "Generating...";
+
+  try {
+    const result = await generatePlanner(plannerDate.value);
+    currentPlan = result.data.plan;
+    currentPlanTasks = result.data.tasks || [];
+
+    renderPlannerMeta();
+    renderPlanTasks();
+    renderCapacity();
+    populateTaskSelect();
+  } catch (error) {
+    alert(error.message);
+  } finally {
+    generatePlanBtn.disabled = false;
+    generatePlanBtn.textContent = "✨ Generate My Day";
+  }
 });
 
 lockPlannerBtn.addEventListener("click", () => {
@@ -300,6 +388,7 @@ confirmLockBtn.addEventListener("click", async () => {
 
     renderPlannerMeta();
     renderPlanTasks();
+    renderCapacity();
     populateTaskSelect();
 
     alert("Plan locked successfully.");
@@ -309,6 +398,16 @@ confirmLockBtn.addEventListener("click", async () => {
 });
 
 async function initPlannerPage() {
+  try {
+    const settingsResult = await getSettings();
+    const cap = Number(settingsResult.data?.daily_hour_cap);
+    if (cap && Number.isFinite(cap)) {
+      dailyHourCapMinutes = Math.round(cap * 60);
+    }
+  } catch (error) {
+    console.error("Failed to load daily hour cap, using default.", error);
+  }
+
   await loadUserTasks();
   await loadPlanner();
 }
