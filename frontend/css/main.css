@@ -958,6 +958,16 @@ img {
   flex-wrap: wrap;
 }
 
+.plan-nav-btn{
+  display: flex;
+  gap: 0.7rem;
+  flex-wrap: wrap;
+  flex-direction: column;
+}
+
+.plan-nav-btn .lbtn {
+  width: 100%;
+}
 @media (max-width: 980px) {
   .planner-top-grid {
     grid-template-columns: 1fr;
