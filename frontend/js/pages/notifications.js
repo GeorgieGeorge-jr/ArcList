@@ -1,4 +1,5 @@
 import { requireAuth, bindLogoutButtons } from "../utils/guard.js";
+import { showToast } from "../components/toast.js";
 import { hydrateAppShell } from "../utils/appShell.js";
 import {
   getNotifications,
@@ -97,7 +98,7 @@ function renderNotifications() {
         await loadNotifications();
       } catch (error) {
         console.error(error);
-        alert(error.message);
+        showToast(error.message, "error");
       }
     });
   });
@@ -109,10 +110,10 @@ function renderNotifications() {
       try {
         await respondToFriendRequest(requestId, "accepted");
         await loadNotifications();
-        alert("Friend request accepted.");
+        showToast("Friend request accepted.", "success");
       } catch (error) {
         console.error(error);
-        alert(error.message);
+        showToast(error.message, "error");
       }
     });
   });
@@ -124,10 +125,10 @@ function renderNotifications() {
       try {
         await respondToFriendRequest(requestId, "rejected");
         await loadNotifications();
-        alert("Friend request declined.");
+        showToast("Friend request declined.", "success");
       } catch (error) {
         console.error(error);
-        alert(error.message);
+        showToast(error.message, "error");
       }
     });
   });
@@ -151,7 +152,7 @@ async function loadNotifications() {
     await renderNotificationBadges();
   } catch (error) {
     console.error("Notifications load failed:", error);
-    alert(error.message);
+    showToast(error.message, "error");
   }
 }
 
@@ -161,7 +162,7 @@ generateNotificationsBtn?.addEventListener("click", async () => {
     await loadNotifications();
   } catch (error) {
     console.error(error);
-    alert(error.message);
+    showToast(error.message, "error");
   }
 });
 
@@ -171,7 +172,7 @@ markAllReadBtn?.addEventListener("click", async () => {
     await loadNotifications();
   } catch (error) {
     console.error(error);
-    alert(error.message);
+    showToast(error.message, "error");
   }
 });
 

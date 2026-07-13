@@ -1,4 +1,5 @@
 import { requireAuth, bindLogoutButtons } from "../utils/guard.js";
+import { showToast } from "../components/toast.js";
 import { hydrateAppShell } from "../utils/appShell.js";
 import { renderNotificationBadges } from "../components/notificationBadge.js";
 import {
@@ -77,10 +78,10 @@ function renderSearchResults(users) {
 
       try {
         await sendFriendRequest(receiverId);
-        alert("Friend request sent.");
+        showToast("Friend request sent.", "success");
         await loadOverview();
       } catch (error) {
-        alert(error.message);
+        showToast(error.message, "error");
       }
     });
   });
@@ -124,7 +125,7 @@ function renderIncomingRequests(items) {
         await respondToFriendRequest(requestId, "accepted");
         await loadOverview();
       } catch (error) {
-        alert(error.message);
+        showToast(error.message, "error");
       }
     });
   });
@@ -137,7 +138,7 @@ function renderIncomingRequests(items) {
         await respondToFriendRequest(requestId, "rejected");
         await loadOverview();
       } catch (error) {
-        alert(error.message);
+        showToast(error.message, "error");
       }
     });
   });
@@ -208,7 +209,7 @@ function renderFriends(items) {
         await removeFriend(friendId);
         await loadOverview();
       } catch (error) {
-        alert(error.message);
+        showToast(error.message, "error");
       }
     });
   });
@@ -229,7 +230,7 @@ async function loadOverview() {
     await renderNotificationBadges();
   } catch (error) {
     console.error(error);
-    alert(error.message);
+    showToast(error.message, "error");
   }
 }
 

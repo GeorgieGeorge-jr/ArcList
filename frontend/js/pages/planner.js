@@ -1,4 +1,5 @@
 import { requireAuth, bindLogoutButtons } from "../utils/guard.js";
+import { showToast } from "../components/toast.js";
 import { getTasks } from "../api/tasks.js";
 import { getSettings } from "../api/settings.js";
 import {
@@ -11,12 +12,10 @@ import {
   updatePlanTaskDuration,
 } from "../api/planner.js";
 import { renderNotificationBadges } from "../components/notificationBadge.js";
-import { renderAvatarChip } from "../components/avatarChip.js";
 
 const user = requireAuth();
 bindLogoutButtons();
 renderNotificationBadges();
-renderAvatarChip();
 
 const sidebarUserName = document.getElementById("sidebarUserName");
 const sidebarUserMeta = document.getElementById("sidebarUserMeta");
@@ -246,7 +245,7 @@ function renderPlanTasks() {
           if (autoBadge) autoBadge.remove();
         }
       } catch (error) {
-        alert(error.message);
+        showToast(error.message, "error");
         await loadPlanner();
       }
     });
@@ -265,7 +264,7 @@ function renderPlanTasks() {
     renderCapacity();
         populateTaskSelect();
       } catch (error) {
-        alert(error.message);
+        showToast(error.message, "error");
       }
     });
   });
@@ -282,7 +281,7 @@ async function loadPlanner() {
     renderCapacity();
     populateTaskSelect();
   } catch (error) {
-    alert(error.message);
+    showToast(error.message, "error");
   }
 }
 
@@ -292,7 +291,7 @@ async function loadUserTasks() {
     userTasks = result.data || [];
     populateTaskSelect();
   } catch (error) {
-    alert(error.message);
+    showToast(error.message, "error");
   }
 }
 
@@ -309,9 +308,9 @@ savePlannerBtn.addEventListener("click", async () => {
     renderPlannerMeta();
     renderPlanTasks();
     renderCapacity();
-    alert("Planner saved.");
+    showToast("Planner saved.", "success");
   } catch (error) {
-    alert(error.message);
+    showToast(error.message, "error");
   }
 });
 
@@ -337,7 +336,7 @@ addTaskToPlanForm.addEventListener("submit", async (event) => {
     renderCapacity();
     populateTaskSelect();
   } catch (error) {
-    alert(error.message);
+    showToast(error.message, "error");
   }
 });
 
@@ -359,7 +358,7 @@ generatePlanBtn.addEventListener("click", async () => {
     renderCapacity();
     populateTaskSelect();
   } catch (error) {
-    alert(error.message);
+    showToast(error.message, "error");
   } finally {
     generatePlanBtn.disabled = false;
     generatePlanBtn.textContent = "✨ Generate My Day";
@@ -393,9 +392,9 @@ confirmLockBtn.addEventListener("click", async () => {
     renderCapacity();
     populateTaskSelect();
 
-    alert("Plan locked successfully.");
+    showToast("Plan locked successfully.", "success");
   } catch (error) {
-    alert(error.message);
+    showToast(error.message, "error");
   }
 });
 

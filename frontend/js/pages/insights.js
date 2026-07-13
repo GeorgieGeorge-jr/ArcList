@@ -1,4 +1,5 @@
 import { requireAuth, bindLogoutButtons } from "../utils/guard.js";
+import { showToast } from "../components/toast.js";
 import { hydrateAppShell } from "../utils/appShell.js";
 import { renderNotificationBadges } from "../components/notificationBadge.js";
 import { getInsights, generateEvaluation } from "../api/evaluations.js";
@@ -30,7 +31,9 @@ function getTodayDateString() {
 insightsDate.value = getTodayDateString();
 
 function renderTodayEvaluation(evaluation) {
-  completionPercentageValue.textContent = `${evaluation?.completion_percentage ?? 0}%`;
+  const percent = Number(evaluation?.completion_percentage ?? 0);
+
+  completionPercentageValue.textContent = `${percent}%`;
   completedTasksValue.textContent = evaluation?.completed_tasks_count ?? 0;
   overdueTasksValue.textContent = evaluation?.overdue_tasks_count ?? 0;
   strongestCategoryValue.textContent = evaluation?.strongest_category || "—";
@@ -38,6 +41,20 @@ function renderTodayEvaluation(evaluation) {
   estimatedMinutesCompletedValue.textContent = `${evaluation?.total_estimated_minutes_completed ?? 0} minutes`;
   consistencyScoreValue.textContent = evaluation?.consistency_score ?? 0;
   summaryNoteValue.textContent = evaluation?.summary_note || "No evaluation generated yet.";
+
+  const ring = document.getElementById("insightsHeroRing");
+  const caption = document.getElementById("insightsHeroCaption");
+
+  if (ring) {
+    ring.setAttribute("data-percent", String(Math.round(percent)));
+    ring.style.setProperty("--pct", String(Math.round(percent)));
+  }
+
+  if (caption) {
+    caption.textContent = evaluation
+      ? `${evaluation.completed_tasks_count ?? 0} tasks completed today`
+      : "No evaluation generated yet.";
+  }
 }
 
 function renderRecentEvaluations(items) {
@@ -45,31 +62,30 @@ function renderRecentEvaluations(items) {
 
   if (!items?.length) {
     recentEvaluationsList.innerHTML = `
-      <div class="notification-item">
-        <h4>No recent evaluations</h4>
-        <p>Your evaluation history will start appearing here.</p>
+      <div class="eval-row">
+        <div class="eval-row-body">
+          <h4>No recent evaluations</h4>
+          <p>Your evaluation history will start appearing here.</p>
+        </div>
       </div>
     `;
     return;
   }
 
   items.forEach((item) => {
-    const card = document.createElement("div");
-    card.className = "notification-item";
+    const pct = Math.round(Number(item.completion_percentage ?? 0));
+    const row = document.createElement("div");
+    row.className = "eval-row";
 
-    card.innerHTML = `
-      <div class="notification-top">
+    row.innerHTML = `
+      <div class="eval-row-badge" style="--pct: ${pct};">${pct}%</div>
+      <div class="eval-row-body">
         <h4>${item.plan_date}</h4>
-        <span class="tag-pill">${item.completion_percentage}%</span>
+        <p>${item.completed_tasks_count} done · ${item.overdue_tasks_count} overdue · consistency ${item.consistency_score}</p>
       </div>
-      <p>
-        Completed: ${item.completed_tasks_count} •
-        Overdue: ${item.overdue_tasks_count} •
-        Consistency: ${item.consistency_score}
-      </p>
     `;
 
-    recentEvaluationsList.appendChild(card);
+    recentEvaluationsList.appendChild(row);
   });
 }
 
@@ -81,7 +97,7 @@ async function loadInsights() {
     await renderNotificationBadges();
   } catch (error) {
     console.error("Insights load failed:", error);
-    alert(error.message);
+    showToast(error.message, "error");
   }
 }
 
@@ -91,7 +107,7 @@ generateInsightsBtn?.addEventListener("click", async () => {
     await loadInsights();
   } catch (error) {
     console.error(error);
-    alert(error.message);
+    showToast(error.message, "error");
   }
 });
 

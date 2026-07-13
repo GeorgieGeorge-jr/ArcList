@@ -1,14 +1,13 @@
 import { requireAuth, bindLogoutButtons } from "../utils/guard.js";
+import { showToast } from "../components/toast.js";
 import { getSettings, updateSettings } from "../api/settings.js";
 import { updateStoredUser } from "../utils/session.js";
 import { applyTheme } from "../utils/theme.js";
 import { renderNotificationBadges } from "../components/notificationBadge.js";
-import { renderAvatarChip } from "../components/avatarChip.js";
 
 const user = requireAuth();
 bindLogoutButtons();
 renderNotificationBadges();
-renderAvatarChip();
 
 const sidebarUserName = document.getElementById("sidebarUserName");
 const sidebarUserMeta = document.getElementById("sidebarUserMeta");
@@ -127,7 +126,7 @@ async function loadSettingsPage() {
     refreshThemePreview();
     refreshAvatarPreview();
   } catch (error) {
-    alert(error.message);
+    showToast(error.message, "error");
   }
 }
 
@@ -171,9 +170,9 @@ settingsForm.addEventListener("submit", async (event) => {
     refreshThemePreview();
     refreshAvatarPreview();
 
-    alert("Settings saved successfully.");
+    showToast("Settings saved successfully.", "success");
   } catch (error) {
-    alert(error.message);
+    showToast(error.message, "error");
   }
 });
 

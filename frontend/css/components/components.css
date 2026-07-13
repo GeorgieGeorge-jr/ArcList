@@ -422,14 +422,253 @@
   /* Turn topbar buttons into compact, content-hugging pills instead
      of stretching every button to half the screen width. */
   .topbar-actions {
-    width: auto;
-    justify-content: flex-end;
+    width: 100%;
+    justify-content: flex-start;
+    flex-wrap: nowrap;
+    gap: 0.45rem;
   }
 
   .topbar-actions .btn {
-    flex: 0 0 auto;
+    flex: 1 1 0;
     width: auto;
-    padding: 0.55rem 1rem;
-    font-size: 0.84rem;
+    min-width: 0;
+    padding: 0.5rem 0.6rem;
+    font-size: 0.76rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+/* Insights page — hero ring + compact stat chips */
+.insights-hero-card {
+  display: flex;
+  align-items: center;
+  gap: 1.1rem;
+  padding: 1.2rem;
+}
+
+.insights-hero-ring {
+  width: 92px;
+  height: 92px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: conic-gradient(var(--accent-1) calc(var(--pct, 0) * 1%), rgba(255, 255, 255, 0.08) 0);
+  box-shadow: inset 0 0 0 9px rgba(255, 255, 255, 0.05);
+}
+
+.insights-hero-ring::after {
+  content: attr(data-percent) "%";
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: rgba(20, 4, 14, 0.92);
+  display: grid;
+  place-items: center;
+  font-weight: 800;
+  font-size: 1.05rem;
+  color: var(--text-1);
+}
+
+.insights-hero-body h3 {
+  font-size: 1.02rem;
+  margin-bottom: 0.2rem;
+}
+
+.insights-hero-body p {
+  color: var(--text-2);
+  font-size: 0.85rem;
+}
+
+/* Compact header controls (avoids the date-input/button squish) */
+.icon-btn {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 1px solid var(--border-strong);
+  background: transparent;
+  color: var(--text-1);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.05rem;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.date-pill-input {
+  padding: 0.6rem 0.9rem;
+  font-size: 0.85rem;
+  border-radius: 999px;
+  min-width: 0 !important;
+  width: auto;
+  flex: 0 1 auto;
+}
+
+/* 2x2 mini stat chip grid */
+.mini-stat-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.7rem;
+}
+
+.mini-stat-chip {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  padding: 0.85rem;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border-soft);
+}
+
+.mini-stat-chip .mini-stat-icon {
+  font-size: 1rem;
+}
+
+.mini-stat-chip .mini-stat-label {
+  color: var(--text-3);
+  font-size: 0.74rem;
+}
+
+.mini-stat-chip .mini-stat-value {
+  color: var(--text-1);
+  font-weight: 700;
+  font-size: 0.98rem;
+  line-height: 1.25;
+}
+
+/* Daily note styled as a quote */
+.note-card {
+  display: flex;
+  gap: 0.7rem;
+  align-items: flex-start;
+  padding: 1rem 1.1rem;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border-soft);
+}
+
+.note-card .note-icon {
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+
+.note-card p {
+  color: var(--text-2);
+  font-size: 0.9rem;
+  line-height: 1.5;
+  font-style: italic;
+}
+
+/* Compact recent-evaluation rows */
+.eval-row {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 0.75rem 0.2rem;
+  border-bottom: 1px solid var(--border-soft);
+}
+
+.eval-row:last-child {
+  border-bottom: none;
+}
+
+.eval-row-badge {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  font-size: 0.74rem;
+  font-weight: 700;
+  background: conic-gradient(var(--accent-1) calc(var(--pct, 0) * 1%), rgba(255, 255, 255, 0.08) 0);
+  color: var(--text-1);
+}
+
+.eval-row-badge::after {
+  content: "";
+}
+
+.eval-row-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.eval-row-body h4 {
+  font-size: 0.9rem;
+  margin-bottom: 0.15rem;
+}
+
+.eval-row-body p {
+  color: var(--text-3);
+  font-size: 0.78rem;
+}
+
+@media (max-width: 640px) {
+  .insights-hero-card {
+    padding: 1rem;
+  }
+
+  .insights-hero-ring {
+    width: 76px;
+    height: 76px;
+  }
+
+  .insights-hero-ring::after {
+    width: 54px;
+    height: 54px;
+    font-size: 0.92rem;
+  }
+}
+
+/* Toast notifications — replaces blocking alert() dialogs everywhere */
+.toast-container {
+  position: fixed;
+  bottom: calc(5.5rem + env(safe-area-inset-bottom, 0px));
+  left: 1rem;
+  right: 1rem;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  align-items: center;
+  pointer-events: none;
+}
+
+.toast {
+  max-width: 420px;
+  padding: 0.75rem 1.1rem;
+  border-radius: 999px;
+  background: rgba(20, 4, 14, 0.95);
+  border: 1px solid var(--border-strong);
+  color: var(--text-1);
+  font-size: 0.85rem;
+  text-align: center;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+  box-shadow: var(--shadow-md);
+}
+
+.toast.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.toast-error {
+  border-color: rgba(255, 100, 100, 0.45);
+}
+
+.toast-success {
+  border-color: rgba(110, 220, 150, 0.4);
+}
+
+@media (min-width: 900px) {
+  .toast-container {
+    bottom: 1.5rem;
   }
 }

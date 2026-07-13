@@ -1,4 +1,5 @@
 import { requireAuth, bindLogoutButtons } from "../utils/guard.js";
+import { showToast } from "../components/toast.js";
 import { hydrateAppShell } from "../utils/appShell.js";
 import { renderNotificationBadges } from "../components/notificationBadge.js";
 import {
@@ -124,7 +125,7 @@ async function loadConversations() {
       renderConversations();
     }
   } catch (error) {
-    alert(error.message);
+    showToast(error.message, "error");
   }
 }
 
@@ -151,7 +152,7 @@ async function loadConversation() {
     await loadConversations();
     await renderNotificationBadges();
   } catch (error) {
-    alert(error.message);
+    showToast(error.message, "error");
   }
 }
 
@@ -159,7 +160,7 @@ messageForm.addEventListener("submit", async (event) => {
   event.preventDefault();
 
   if (!activeFriendId) {
-    alert("Select a conversation first.");
+    showToast("Select a conversation first.", "error");
     return;
   }
 
@@ -174,7 +175,7 @@ messageForm.addEventListener("submit", async (event) => {
     messageInput.value = "";
     await loadConversation();
   } catch (error) {
-    alert(error.message);
+    showToast(error.message, "error");
   }
 });
 

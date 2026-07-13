@@ -1,6 +1,5 @@
 import { getUser } from "./session.js";
 import { applyTheme } from "./theme.js";
-import { renderAvatarChip } from "../components/avatarChip.js";
 
 function hydrateAppShell(options = {}) {
   const user = getUser();
@@ -10,7 +9,6 @@ function hydrateAppShell(options = {}) {
   }
 
   applyTheme(user.theme || "summer-raspberry");
-  renderAvatarChip();
 
   const sidebarUserName = document.getElementById("sidebarUserName");
   const sidebarUserMeta = document.getElementById("sidebarUserMeta");

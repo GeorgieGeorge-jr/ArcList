@@ -1,12 +1,11 @@
 import { requireAuth, bindLogoutButtons } from "../utils/guard.js";
+import { showToast } from "../components/toast.js";
 import { getTasks, createTask, toggleTaskCompletion } from "../api/tasks.js";
 import { renderNotificationBadges } from "../components/notificationBadge.js";
-import { renderAvatarChip } from "../components/avatarChip.js";
 
 const user = requireAuth();
 bindLogoutButtons();
 renderNotificationBadges();
-renderAvatarChip();
 
 const sidebarUserName = document.getElementById("sidebarUserName");
 const sidebarUserMeta = document.getElementById("sidebarUserMeta");
@@ -159,7 +158,7 @@ function renderTasks(tasks) {
         await toggleTaskCompletion(taskId);
         await loadTasks();
       } catch (error) {
-        alert(error.message);
+        showToast(error.message, "error");
       }
     });
   });
@@ -191,7 +190,7 @@ async function loadTasks() {
     applyFilters();
   } catch (error) {
     console.error(error);
-    alert(error.message);
+    showToast(error.message, "error");
   }
 }
 
@@ -240,7 +239,7 @@ createTaskForm?.addEventListener("submit", async (event) => {
     closeTaskModal();
     await loadTasks();
   } catch (error) {
-    alert(error.message);
+    showToast(error.message, "error");
   }
 });
 
