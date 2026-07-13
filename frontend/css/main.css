@@ -54,7 +54,7 @@ img {
 .btn {
   border: none;
   cursor: pointer;
-  padding: 0.95rem 1.25rem;
+  padding: 0.95rem 1.35rem;
   border-radius: 999px;
   transition: transform var(--transition), background var(--transition), border-color var(--transition), opacity var(--transition);
   display: inline-flex;
@@ -77,6 +77,7 @@ img {
   background: transparent;
   color: var(--text-1);
   border: 1px solid var(--border-strong);
+
 }
 
 .btn-ghost {
